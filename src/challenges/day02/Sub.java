@@ -16,19 +16,20 @@ public class Sub {
 	protected int aim;
 	
 	/** Movement directions */
-	protected enum DIR {
+	protected enum MoveDir {
 		FORWARD("forward"), UP("up"), DOWN("down");
 		
 		/** The string representation of the direction */
 		protected final String label;
-		private DIR( final String l ) { this.label = l; }
+		private MoveDir( final String l ) { this.label = l; }
 
 		/**
 		 * Creates a direction from string value
+		 * 
 		 * @param s The label value
 		 */
-		public static DIR fromString( final String s ) {
-			for( DIR d : DIR.values( ) )
+		public static MoveDir fromString( final String s ) {
+			for( MoveDir d : MoveDir.values( ) )
 				if( d.label.equals( s ) ) return d;
 			throw new RuntimeException( "No such enum value " + s );
 		}
@@ -45,7 +46,7 @@ public class Sub {
 	 * Creates a new submarine at the given start position
 	 * 
 	 * @param pos The starting position
-	 * @patam aim The initial aim of the sub
+	 * @param aim The initial aim of the sub
 	 */
 	public Sub( final Coord2D pos, final int aim ) {
 		this.pos = pos;
@@ -58,7 +59,7 @@ public class Sub {
 	 * @param dir The movement direction
 	 * @param dist The distance to move
 	 */
-	public void move( final DIR dir, int dist ) {
+	public void move( final MoveDir dir, int dist ) {
 		switch( dir ) {
 			case FORWARD: pos = pos.move( dist, 0 ); break;
 			case UP: pos = pos.move( 0, -dist ); break;
@@ -72,7 +73,7 @@ public class Sub {
 	 * @param dir The movement direction
 	 * @param dist The distance to move
 	 */
-	public void moveAimed( final DIR dir, int dist ) {
+	public void moveAimed( final MoveDir dir, int dist ) {
 		switch( dir ) {
 			case FORWARD: pos = pos.move( dist, aim * dist ); break;
 			case UP: aim -= dist; break;

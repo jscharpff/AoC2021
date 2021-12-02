@@ -4,7 +4,7 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import challenges.day02.Sub.DIR;
+import challenges.day02.Sub.MoveDir;
 import util.geometry.Coord2D;
 import util.io.FileReader;
 
@@ -48,7 +48,7 @@ public class Day02 {
 			if( !m.find( ) ) throw new RuntimeException( "Invalid movement format" );
 
 			// what type of movement do we process?
-			final DIR dir = DIR.fromString( m.group( 1 ) );
+			final MoveDir dir = MoveDir.fromString( m.group( 1 ) );
 			final int dist = Integer.parseInt( m.group( 2 ) );
 			if( !aimed )
 				sub.move( dir, dist );
