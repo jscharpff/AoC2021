@@ -48,10 +48,12 @@ public class Day02 {
 			if( !m.find( ) ) throw new RuntimeException( "Invalid movement format" );
 
 			// what type of movement do we process?
+			final DIR dir = DIR.fromString( m.group( 1 ) );
+			final int dist = Integer.parseInt( m.group( 2 ) );
 			if( !aimed )
-				sub.move( DIR.fromString( m.group( 1 ) ), Integer.parseInt( m.group( 2 ) ) );
+				sub.move( dir, dist );
 			else
-				sub.moveAimed( DIR.fromString( m.group( 1 ) ), Integer.parseInt( m.group( 2 ) ) );
+				sub.moveAimed( dir, dist );
 		}
 
 		// return product of horizontal pos and depth as result
