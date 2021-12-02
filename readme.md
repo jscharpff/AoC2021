@@ -1,0 +1,1 @@
+Code repository containing my solutions to the 2021 Advent of Code challenge. For the actual event and the challenges see: https://adventofcode.com/2021

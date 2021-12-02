@@ -2,7 +2,7 @@ package challenges.day01;
 
 import util.io.FileReader;
 
-public class Day1 {
+public class Day01 {
 
 	/**
 	 * Day 1 of the Advent of Code 2021
@@ -13,16 +13,16 @@ public class Day1 {
 	 * @throws Exception
 	 */
 	public static void main( final String[] args ) throws Exception {
-		final int[] ex_input = new FileReader( Day1.class.getResource( "day1_example.txt" ) ).readIntArray( );
-		final int[] input = new FileReader( Day1.class.getResource( "day1_input.txt" ) ).readIntArray( );
+		final int[] ex_input = new FileReader( Day01.class.getResource( "day01_example.txt" ) ).readIntArray( );
+		final int[] input = new FileReader( Day01.class.getResource( "day01_input.txt" ) ).readIntArray( );
 		
 		System.out.println( "---[ Part 1 ]---" );
 		System.out.println( "Example: " + countIncreases( ex_input, 1 ) ); 
-		System.out.println( "Answer: " + countIncreases( input, 1 ) ); 
+		System.out.println( "Answer : " + countIncreases( input, 1 ) ); 
 
 		System.out.println( "\n---[ Part 2 ]---" );
 		System.out.println( "Example: " + countIncreases( ex_input, 3 ) ); 
-		System.out.println( "Answer: " + countIncreases( input, 3 ) ); 
+		System.out.println( "Answer : " + countIncreases( input, 3 ) ); 
 	}
 	
 	/**
