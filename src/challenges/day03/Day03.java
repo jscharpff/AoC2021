@@ -2,6 +2,7 @@ package challenges.day03;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.IntStream;
 
 import util.io.FileReader;
 
@@ -66,14 +67,13 @@ public class Day03 {
 	 */
 	protected static final String retainCommon( final List<String> input, final boolean most ) {
 		int len = input.get( 0 ).length( );
-		final List<String> binaries = new ArrayList<>( input );
+		List<String> binaries = new ArrayList<>( input );
 		
 		// go over all bits and keep only binaries that match with common bit
 		for( int b = 0; b < len; b++ ) {
 			final String common = findCommon( binaries, most );
-			for( int i = binaries.size( ) - 1; i >= 0; i-- )
-				if( binaries.get( i ).charAt( b ) != common.charAt( b ) )
-					binaries.remove( i );
+			final int bit = b;
+			binaries = binaries.stream( ).filter( x -> x.charAt( bit ) == common.charAt( bit ) ).toList( );
 
 			// stop with only one bit string left, otherwise the least common bit
 			// string will be the inverse of it and lead to its removal
@@ -99,15 +99,12 @@ public class Day03 {
 		final int N = input.size( );
 		
 		// count ones
-		for( String s : input )
+		for( final String s : input )
 			for( int i = 0; i < s.length( ); i++ )
 				if( s.charAt( i ) == '1' ) countOnes[i]++;
 
 		// reconstruct most common from count
-		String res = "";
-		for( int i = 0; i < countOnes.length; i++ ) {
-			res += countOnes[i] >= (N / 2.0) ? "1" : "0";
-		}
+		String res = IntStream.of( countOnes ).mapToObj( x -> x >= (N / 2.0) ? "1" : "0" ).reduce( "", (x,y) -> x + y );
 		
 		// In case of least occurring bit the result can be produced by flipping the outcome
 		if( !most ) {
