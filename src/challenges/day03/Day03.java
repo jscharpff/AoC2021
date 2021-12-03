@@ -2,8 +2,8 @@ package challenges.day03;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.IntStream;
 
+import util.BitString;
 import util.io.FileReader;
 
 public class Day03 {
@@ -20,13 +20,17 @@ public class Day03 {
 		final List<String> ex_input = new FileReader( Day03.class.getResource( "day03_example.txt" ) ).readLines( );
 		final List<String> input = new FileReader( Day03.class.getResource( "day03_input.txt" ) ).readLines( );
 		
+		// convert to bit strings
+		final List<BitString> ex_bits = ex_input.stream( ).map( BitString::fromString ).toList( );
+		final List<BitString> inp_bits = input.stream( ).map( BitString::fromString ).toList( );
+		
 		System.out.println( "---[ Part 1 ]---" );
-		System.out.println( "Example: " + part1( ex_input ) );
-		System.out.println( "Answer : " + part1( input ) );
+		System.out.println( "Example: " + part1( ex_bits ) );
+		System.out.println( "Answer : " + part1( inp_bits ) );
 
 		System.out.println( "\n---[ Part 2 ]---" );
-		System.out.println( "Example: " + part2( ex_input ) );
-		System.out.println( "Answer : " + part2( input ) );
+		System.out.println( "Example: " + part2( ex_bits ) );
+		System.out.println( "Answer : " + part2( inp_bits ) );
 	}
 
 	/**
@@ -36,10 +40,10 @@ public class Day03 {
 	 * @param input The list of bit strings, String formatted
 	 * @return The product of gamma and epsilon level int values
 	 */
-	protected static final long part1( final List<String> input ) {
-		final String gamma = findCommon( input, true );
-		final String epsilon = findCommon( input, false );
-		return Integer.parseUnsignedInt( gamma, 2 ) * Integer.parseInt( epsilon, 2 );
+	protected static final long part1( final List<BitString> input ) {
+		final BitString gamma = findCommon( input, true );
+		final BitString epsilon = findCommon( input, false );
+		return gamma.toLong( ) * epsilon.toLong( );
 	}
 
 	/**
@@ -49,10 +53,10 @@ public class Day03 {
 	 * @param input The list of bit strings, String formatted
 	 * @return The product of oxygen and co2 level int values
 	 */
-	protected static final long part2( final List<String> input ) {
-		final String oxy = retainCommon( input, true );
-		final String co2 = retainCommon( input, false );
-		return Integer.parseUnsignedInt( oxy, 2 ) * Integer.parseInt( co2, 2 );
+	protected static final long part2( final List<BitString> input ) {
+		final BitString oxy = retainCommon( input, true );
+		final BitString co2 = retainCommon( input, false );
+		return oxy.toLong( ) * co2.toLong( );
 	}
 
 	/**
@@ -65,15 +69,15 @@ public class Day03 {
 	 * @return The single bit string that in each iteration matched the most or
 	 *   least common bit string over the remaining set
 	 */
-	protected static final String retainCommon( final List<String> input, final boolean most ) {
+	protected static final BitString retainCommon( final List<BitString> input, final boolean most ) {
 		int len = input.get( 0 ).length( );
-		List<String> binaries = new ArrayList<>( input );
+		List<BitString> binaries = new ArrayList<>( input );
 		
 		// go over all bits and keep only binaries that match with common bit
-		for( int b = 0; b < len; b++ ) {
-			final String common = findCommon( binaries, most );
+		for( int b = len - 1; b >= 0; b-- ) {
+			final BitString common = findCommon( binaries, most );
 			final int bit = b;
-			binaries = binaries.stream( ).filter( x -> x.charAt( bit ) == common.charAt( bit ) ).toList( );
+			binaries = binaries.stream( ).filter( x -> x.get( bit ) == common.get( bit ) ).toList( );
 
 			// stop with only one bit string left, otherwise the least common bit
 			// string will be the inverse of it and lead to its removal
@@ -93,27 +97,23 @@ public class Day03 {
 	 * @return A single bit string that contains the most or least occurring bit
 	 *   value per bit over the list of bit strings
 	 */
-	protected static final String findCommon( final List<String> input, final boolean most ) {
+	protected static final BitString findCommon( final List<BitString> input, final boolean most ) {
 		final int len = input.get( 0 ).length( );
 		final int[] countOnes = new int[ len ];
 		final int N = input.size( );
 		
 		// count ones
-		for( final String s : input )
+		for( final BitString s : input )
 			for( int i = 0; i < s.length( ); i++ )
-				if( s.charAt( i ) == '1' ) countOnes[i]++;
-
+				if( s.get( i ) ) countOnes[i]++;
+		
 		// reconstruct most common from count
-		String res = IntStream.of( countOnes ).mapToObj( x -> x >= (N / 2.0) ? "1" : "0" ).reduce( "", (x,y) -> x + y );
+		final BitString res = new BitString( len );
+		for( int i = 0; i < countOnes.length; i++ )
+			res.set( i, countOnes[i] >= (N / 2.0) );
 		
 		// In case of least occurring bit the result can be produced by flipping the outcome
-		if( !most ) {
-			final String resold = res;
-			res = "";
-			for( int i = 0; i < resold.length( ); i++ )
-				res += resold.charAt( i ) == '1' ? '0' : '1';
-		}
-
+		if( !most ) res.negate( );
 		return res;
 	}
 }
