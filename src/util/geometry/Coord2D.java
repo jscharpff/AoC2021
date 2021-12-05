@@ -1,5 +1,8 @@
 package util.geometry;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 /**
  * Simple 2 dimensional coordinate
  * 
@@ -107,6 +110,21 @@ public class Coord2D {
 		final Coord2D c = (Coord2D)obj;
 		
 		return c.x == x && c.y == y;
+	}
+	
+	/**
+	 * Creates a new 2D Coordinate from a String representation in either (x,y)
+	 * or x,y format
+	 * 
+	 * @param coord The coordinate as string
+	 * @return The Coord2D
+	 * @throws IllegalArgumentException if the format of the coordinate is incorrect
+	 */
+	public static Coord2D fromString( final String coord ) throws IllegalArgumentException {
+		final Matcher m = Pattern.compile( "^\\(?\\s*(\\d+)\\s*,\\s*(\\d+)\\s*\\)?$" ).matcher( coord.trim( ) );
+		if( !m.find( ) ) throw new IllegalArgumentException( "Invalid coordinate: " + coord );
+		
+		return new Coord2D( Integer.parseInt( m.group( 1 ) ), Integer.parseInt( m.group( 2 ) ) );
 	}
 	
 	/** @return The string describing the position */

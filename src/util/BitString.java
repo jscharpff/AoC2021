@@ -33,6 +33,16 @@ public class BitString implements Iterable<Boolean> {
 	}
 	
 	/**
+	 * Creates a BitString from another BitString
+	 * 
+	 * @param bits The other BitString
+	 */
+	public BitString( final BitString bits ) {
+		this( bits.length );
+		this.value = bits.value;
+	}
+	
+	/**
 	 * Sets the bit to true at the specified index
 	 * 
 	 * @param index The bit index of the bit to set
@@ -77,6 +87,19 @@ public class BitString implements Iterable<Boolean> {
 		
 		return (value & indexToBitMask( index )) > 0;
 	}
+	
+	/**
+	 * Clears the value of the bit at the specified index
+	 * 
+	 * @param index The bit index of the bit to clear
+	 * @return The previous value of the bit
+	 * @throws IndexOutOfBoundsException if the index is outside of the bit
+	 *   string length
+	 */
+	public boolean clear( final int index ) throws IndexOutOfBoundsException {
+		return set( index, false );
+	}
+
 	
 	/**
 	 * Negates the bit string
