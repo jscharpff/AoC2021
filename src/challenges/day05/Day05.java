@@ -7,9 +7,9 @@ import util.io.FileReader;
 public class Day05 {
 
 	/**
-	 * Day 4 of the Advent of Code 2021
+	 * Day 5 of the Advent of Code 2021
 	 * 
-	 * https://adventofcode.com/2021/day/4
+	 * https://adventofcode.com/2021/day/5
 	 * 
 	 * @param args The command line arguments
 	 * @throws Exception

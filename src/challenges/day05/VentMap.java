@@ -1,11 +1,10 @@
 package challenges.day05;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import util.geometry.Coord2D;
+import util.geometry.CoordGrid;
 import util.geometry.Line2D;
 
 /**
@@ -16,19 +15,16 @@ import util.geometry.Line2D;
 public class VentMap {
 	/** The list of line segments that represent the vents */
 	protected List<Line2D> vents;
+
+	/** The coordinate grid that holds the number of overlaps */
+	protected final CoordGrid<Integer> grid;
 	
-	/** Current size of the vent grid */
-	protected Coord2D size;
-	
-	/** The grid that captures the number of vents per coordinate */
-	protected final Map<Coord2D, Integer> grid;
 	/**
 	 * Creates a new hydrothermal VentMap
 	 */
 	public VentMap( ) {
 		vents = new ArrayList<>( );
-		grid = new HashMap<>( );
-		size = null; // not computed yet
+		grid = new CoordGrid<>( 0 );
 	}
 	
 	/**
@@ -41,31 +37,9 @@ public class VentMap {
 		
 		// update coordinate overlap in the grid
 		for( final Coord2D c : vent.getPoints( ) )
-			grid.put( c, grid.getOrDefault( c, 0 ) + 1);
-
-		// clear size to require new computation
-		size = null;
+			grid.add( c, grid.get( c, 0 ) + 1 );
 	}
-	
-	/** 
-	 * @return The size of the current grid
-	 */
-	protected Coord2D size( ) {
-		// already computed?
-		if( size != null ) return size;
 		
-		// nope, go over all point and store maximum X and Y values
-		int maxX = 0; int maxY = 0;
-		for( final Coord2D c : grid.keySet( ) ) {
-			if( c.x > maxX ) maxX = c.x;
-			if( c.y > maxY ) maxY = c.y;
-		}
-		
-		// store size and return it
-		size = new Coord2D( maxX, maxY );
-		return size;
-	}
-	
 	/**
 	 * Counts the number of points at which at least two vents overlap
 	 * 
@@ -73,7 +47,7 @@ public class VentMap {
 	 */
 	public long countOverlap( ) {
 		long count = 0;
-		for( final Integer c : grid.values( ) )
+		for( final Integer c : grid.getValues( ) )
 			if( c > 1 ) count++;
 		return count;
 	}
@@ -105,15 +79,9 @@ public class VentMap {
 	 */
 	@Override
 	public String toString( ) {
-		String res = vents.toString( ) + "\n";		
-		
-		// visualise grid
-		for( int y = 0; y <= size.y; y++ ) {
-			res += "\n";
-			for( int x = 0; x <= size.x; x++ ) {
-				res += grid.getOrDefault( new Coord2D( x, y ), 0 );
-			}
-		}
+		String res = vents.toString( ) + "\n\n";		
+		res += "--[Grid " + grid.size( ) + "]--\n";
+		res += grid.toString(  );
 		return res;
 	}
 }
