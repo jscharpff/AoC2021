@@ -25,37 +25,6 @@ public class Line2D {
 		this.A = A; this.B = B;
 	}
 	
-	/**
-	 * Compute list of points on this line segment, with steps of length d from
-	 * point A to B. Note that the end coordinate of the segment is not
-	 * guaranteed to be in the output for step sizes larger than 1, as it may be
-	 * "overshot". I.e., taking steps of size d>1 will not end up in B perfectly.
-	 * 
-	 * @param d The step size
-	 * @return The list of points from A to B
-	 */
-	public List<Coord2D> getPoints( final int d ) {
-		final List<Coord2D> points = new ArrayList<>( );
-
-		// determine X and Y directions
-		final int dx = (B.x - A.x) == 0 ? 0 : ((B.x - A.x) >= 0 ? d : -d);
-		final int dy = (B.y - A.y) == 0 ? 0 : ((B.y - A.y) >= 0 ? d : -d);
-		
-		// "walk" from A to B in step sizes d, start from A
-		int x = A.x; int y = A.y;
-		points.add( new Coord2D( x, y ) );
-		
-		// and keep walking until we are less than d away from B
-		while( Math.abs( B.x - x ) >= d || Math.abs( B.y - y ) >= d ) {
-			if( Math.abs( B.x - x ) >= d ) x += dx;
-			if( Math.abs( B.y - y ) >= d ) y += dy;
-			
-			points.add( new Coord2D( x, y ) );
-		}
-
-		// return the coordinates we've traversed
-		return points;
-	}
 	
 	/**
 	 * Computes list of points on line segment from A to B with step size 1
@@ -66,6 +35,57 @@ public class Line2D {
 		return getPoints( 1 );
 	}
 	
+
+	/**
+	 * Compute list of points on this line segment, with steps of length delta
+	 * from point A to B. Note that the end coordinate of the segment is not
+	 * guaranteed to be in the output for step sizes larger than 1, as it may be
+	 * "overshot". I.e., taking steps of size > 1 will not end up in B perfectly.
+	 * 
+	 * @param delta The step size, both horizontal and vertical
+	 * @return The list of points from A to B
+	 */
+	public List<Coord2D> getPoints( final int delta ) {
+		return getPoints( delta, delta );
+	}
+	
+	/**
+	 * Compute list of points on this line segment, with steps of length delta 
+	 * from point A to B. Note that the end coordinate of the segment is not
+	 * guaranteed to be in the output for step sizes larger than 1, as it may be
+	 * "overshot". I.e., taking steps of size d>1 will not end up in B perfectly.
+	 * 
+	 * @param deltax The horizontal step size
+	 * @param deltay The vertical step size
+	 * @return The list of points from A to B
+	 */
+	public List<Coord2D> getPoints( final int deltax, final int deltay ) {
+		final List<Coord2D> points = new ArrayList<>( );
+		
+		// store absolute deltas for convenience
+		final int dx = Math.abs( deltax );
+		final int dy = Math.abs( deltay );
+
+		// determine X and Y directions
+		final int xinc = (B.x - A.x) == 0 ? 0 : ((B.x - A.x) >= 0 ? dx : -dx);
+		final int yinc = (B.y - A.y) == 0 ? 0 : ((B.y - A.y) >= 0 ? dy : -dy);
+		
+		// "walk" from A to B in step sizes d, start from A
+		int x = A.x; int y = A.y;
+		points.add( new Coord2D( x, y ) );
+		
+		// and keep walking until we are less than d away from B
+		while( Math.abs( B.x - x ) >= dx || Math.abs( B.y - y ) >= dy ) {
+			if( Math.abs( B.x - x ) >= dx ) x += xinc;
+			if( Math.abs( B.y - y ) >= dy ) y += yinc;
+			
+			points.add( new Coord2D( x, y ) );
+		}
+
+		// return the coordinates we've traversed
+		return points;
+	}
+
 	/**
 	 * @return True iff the line segment is a horizontal line
 	 */
