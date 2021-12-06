@@ -37,13 +37,15 @@ public class FileReader {
 	 */
 	public int[] readIntArray() throws IOException {
 		final List<String> lines = this.readLines( );
-		final int[] res = new int[ lines.size( ) ];
+		final List<Integer> values = new ArrayList<>( lines.size( ) );
 		
-		for( int i = 0; i < lines.size( ); i++ ) {
-			res[ i ] = Integer.parseInt( lines.get( i ) );
+		for( final String line : lines ) {
+			// split within line by comma, if there are any
+			for( final String s : line.split( "," ) )
+				values.add( Integer.parseInt( s ) );
 		}
 		
-		return res;
+		return values.stream( ).mapToInt( Integer::intValue ).toArray( );
 	}
 	
 	/**
