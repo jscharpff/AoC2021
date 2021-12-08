@@ -31,7 +31,8 @@ public class Day08 {
 	 * Part 1 is easy, simply count all 2, 3, 4 or 7 length string in the output
 	 * digit part of the input and return the count 
 	 * 
-	 * @param input The list of digit-encoding segments
+	 * @param input The segment encodings as 10 space-separated [a-g]+ strings,
+	 *   a pipe and four space-separated [a-g]+ strings
 	 * @return The count of "unique" digits in the output
 	 */
 	public static long part1( final List<String> input ) {
@@ -50,9 +51,13 @@ public class Day08 {
 	}
 	
 	/**
+	 * Slightly more difficult. Use the input side of each line to deduce the
+	 * encoding of segments to digits and use that to convert the output side
+	 * of each line into an integer value. 
 	 * 
-	 * @param input
-	 * @return
+	 * @param input The segment encodings as 10 space-separated [a-g]+ strings,
+	 *   a pipe and four space-separated [a-g]+ strings
+	 * @return The sum of all decoded values
 	 */
 	public static long part2( final List<String> input ) {
 		// decode each line and sum over their output
