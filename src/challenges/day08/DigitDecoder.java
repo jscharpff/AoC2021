@@ -15,9 +15,6 @@ import util.Util;
  * @author Joris
  */
 public class DigitDecoder {
-	/** The original input */
-	protected final List<String> input;
-	
 	/** The map of all segments in the input and their decoded value */
 	protected final Map<Integer, String> digits;
 
@@ -31,18 +28,17 @@ public class DigitDecoder {
 		if( strinput.length != 10 ) 
 			throw new RuntimeException( "Invalid segment encoding as input, exactly 10 segments are required."  );
 		
+		// allocate result map and start finding deducing the encoding!
 		digits = new HashMap<>( 10 );
-		input = Arrays.asList( strinput );
-
-		buildMapping( );
+		buildMapping( strinput );
 	}
 	
 	/**
 	 * Reconstructs the digit mapping from the input samples
 	 */
-	protected void buildMapping( ) {
+	protected void buildMapping( final String[] input ) {
 		// list of remaining input strings, discarding the output part for now
-		final List<String> remaining = new ArrayList<>( input );
+		final List<String> remaining = new ArrayList<>( Arrays.asList( input ) );
 		
 		// get input segments that lead to unique digits 	
 		for( final String s : input ) {
@@ -147,6 +143,9 @@ public class DigitDecoder {
 	protected long decodeSegment( final String in ) {		
 		for( int i : digits.keySet( ) ) {
 			final String dstr = digits.get( i );
+			
+			// segment encodings may be in any order, so check length first and then
+			// compare all characters of both segments
 			if( in.length( ) == dstr.length( ) &&  Util.stringContainsAll( in, dstr ) ) return i;
 		}
 		
@@ -159,6 +158,6 @@ public class DigitDecoder {
 	 */
 	@Override
 	public String toString( ) {
-		return input.toString( );
+		return digits.toString( );
 	}
 }
