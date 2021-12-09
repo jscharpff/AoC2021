@@ -1,12 +1,11 @@
 package challenges.day08;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-
-import util.Util;
+import java.util.Set;
 
 /**
  * Class that can decode character-encoded digits by inferring the encoding
@@ -16,7 +15,7 @@ import util.Util;
  */
 public class DigitDecoder {
 	/** The map of all segments in the input and their decoded value */
-	protected final Map<Integer, String> digits;
+	protected final Map<Integer, Set<Character>> digits;
 
 	/**
 	 * Creates a new DigitEncoder
@@ -38,36 +37,42 @@ public class DigitDecoder {
 	 */
 	protected void buildMapping( final String[] input ) {
 		// list of remaining input strings, discarding the output part for now
-		final List<String> remaining = new ArrayList<>( Arrays.asList( input ) );
-		
+		final List<Set<Character>> remaining = new ArrayList<>(  );
+		for( final String in : input )
+			remaining.add( str2charset( in ) );
+			
 		// get input segments that lead to unique digits 	
 		for( final String s : input ) {
-			if( s.length( ) == 2 ) { found( remaining, s, 1 ); continue; }
-			if( s.length( ) == 3 ) { found( remaining, s, 7 ); continue; }
-			if( s.length( ) == 4 ) { found( remaining, s, 4 ); continue; }
-			if( s.length( ) == 7 ) { found( remaining, s, 8 ); continue; }
+			final Set<Character> cs = str2charset( s );
+			if( s.length( ) == 2 ) { found( remaining, cs, 1 ); continue; }
+			if( s.length( ) == 3 ) { found( remaining, cs, 7 ); continue; }
+			if( s.length( ) == 4 ) { found( remaining, cs, 4 ); continue; }
+			if( s.length( ) == 7 ) { found( remaining, cs, 8 ); continue; }
 		}
 		
 		// now deduce digit encodings from segment descriptions
 		
 		// the segment diff between 8 and 1 can only be in 6
-		final String diff81 = Util.stringDifference( digits.get( 8 ), digits.get( 1 ) );
+		final Set<Character> diff81 = new HashSet<Character>( digits.get( 8 ) );
+		diff81.removeAll( digits.get( 1 ) );
 		found( remaining, find( remaining, diff81, -1, true ), 6);
 		
 		// of the now remaining digits, the diff between 8 and 4 can now only be 2 or 0
-		final String diff84 = Util.stringDifference( digits.get( 8 ), digits.get( 4 ) );
+		final Set<Character> diff84 = new HashSet<Character>( digits.get( 8 ) );
+		diff84.removeAll( digits.get( 4 ) );
 		found( remaining, find( remaining, diff84, 6, true ), 0 );
 		found( remaining, find( remaining, diff84, 5, true ), 2 );
 		
 		// of the remaining digits, the only one that does NOT have the difference between 8 and 2 is 3
-		final String diff82 = Util.stringDifference( digits.get( 8 ), digits.get( 2 ) );
+		final Set<Character> diff82 = new HashSet<Character>( digits.get( 8 ) );
+		diff82.removeAll( digits.get( 2 ) );
 		found( remaining, find( remaining, diff82,-1, false ), 3 );
 		
 		// finally, 5 and 9 can be discerned by their length
 		for( int i = remaining.size( ) - 1; i >= 0; i-- ) {
-			final String s = remaining.get( i );
-			if( s.length( ) == 5 ) found( remaining, s, 5 );
-			else if( s.length( ) == 6 ) found( remaining, s, 9 );
+			final Set<Character> s = remaining.get( i );
+			if( s.size( ) == 5 ) found( remaining, s, 5 );
+			else if( s.size( ) == 6 ) found( remaining, s, 9 );
 		}
 		
 		// check length
@@ -81,7 +86,7 @@ public class DigitDecoder {
 	 * @param encoding The segment encoding of the digit 
 	 * @param digit The integer value of the digit to store
 	 */
-	protected void found( final List<String> remaining, final String encoding, final int digit ) {
+	protected void found( final List<Set<Character>> remaining, final Set<Character> encoding, final int digit ) {
 		digits.put( digit, encoding );
 		remaining.remove( encoding );
 	}
@@ -103,11 +108,11 @@ public class DigitDecoder {
 	 *   false to require that none of the segments of match are present
 	 * @return The segment encoding that matches the filter criteria
 	 */
-	protected String find( final List<String> remaining, final String match, final int length, final boolean shouldmatch ) {
+	protected Set<Character> find( final List<Set<Character>> remaining, final Set<Character> match, final int length, final boolean shouldmatch ) {
 		for( int i = remaining.size( ) - 1; i >= 0; i-- ) {
-			final String s = remaining.get( i );
-			if( Util.stringContainsAll( s, match ) == shouldmatch ) {
-				if( length != -1 && s.length( ) != length ) continue;
+			final Set<Character> s = remaining.get( i );
+			if( s.containsAll( match ) == shouldmatch ) {
+				if( length != -1 && s.size( ) != length ) continue;
 				
 				return s;
 			}
@@ -142,16 +147,22 @@ public class DigitDecoder {
 	 */
 	protected long decodeSegment( final String in ) {		
 		for( int i : digits.keySet( ) ) {
-			final String dstr = digits.get( i );
+			final Set<Character> dstr = digits.get( i );
 			
 			// segment encodings may be in any order, so check length first and then
 			// compare all characters of both segments
-			if( in.length( ) == dstr.length( ) &&  Util.stringContainsAll( in, dstr ) ) return i;
+			if( in.length( ) == dstr.size( ) &&  dstr.containsAll( str2charset( in ) ) ) return i;
 		}
 		
 		throw new RuntimeException( "Failed to decode digit from input " + in );
 	}
 	
+	
+	protected Set<Character> str2charset( final String str ) {
+		final Set<Character> chars = new HashSet<>( );
+		str.chars( ).forEach( c -> chars.add( (char)c ) );
+		return chars;
+	}
 	
 	/**
 	 * @return The string that describes the current mapping 
