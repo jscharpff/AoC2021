@@ -54,8 +54,25 @@ public class CoordGrid<T> implements Iterable<Coord2D> {
 	 * @return The value that is stored at the coordinate or the grid's default
 	 *   value if not found
 	 */
-	public T get( final Coord2D coord ) throws IndexOutOfBoundsException {
+	public T get( final Coord2D coord ) {
 		return get( coord, defaultValue );
+	}
+	
+	/**
+	 * Retrieves the value at the coordinate grid at the given x and y position.
+	 * This function offers a more convenient fetch operations when iterating
+	 * over coordinates by x and y values.
+	 * <br/><br/>
+	 * Note that it behaves similar to <code>get( Coord2D )</code> in that it
+	 * does not check whether the position is actually on the grid, it just
+	 * returns the default value if not found. 
+	 * 
+	 * @param x The x coordinate
+	 * @param y The y coordinate
+	 * @return The value stored at (x,y) or the default value if not set
+	 */
+	public T get( final int x, final int y ) {
+		return get( new Coord2D( x, y ), defaultValue );
 	}
 	
 	/**
@@ -84,6 +101,17 @@ public class CoordGrid<T> implements Iterable<Coord2D> {
 	 */
 	public Collection<T> getValues( ) {
 		return map.values( );
+	}
+	
+	/**
+	 * Checks whether the specified coordinate has a value stored in the grid
+	 * 
+	 * @param coord The coordinate to check
+	 * @return True iff a value is stored at the given coordinate (i.e. not the
+	 *   default value)
+	 */
+	public boolean hasValue( final Coord2D coord ) {
+		return map.containsKey( coord );
 	}
 	
 	/** 

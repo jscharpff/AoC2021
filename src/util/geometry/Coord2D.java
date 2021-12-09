@@ -1,5 +1,7 @@
 package util.geometry;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -15,6 +17,9 @@ public class Coord2D {
 	/** The vertical position */
 	public final int y;
 	
+	/** The cached hash code, it is immutable */
+	private final int hashcode;
+
 	/**
 	 * Creates a new 2D coordinate
 	 * 
@@ -24,6 +29,9 @@ public class Coord2D {
 	public Coord2D( final int x, final int y ) {
 		this.x = x;
 		this.y = y;
+		
+		// compute hash code once and store it
+		hashcode = toString( ).hashCode( );
 	}
 	
 	/**
@@ -104,6 +112,39 @@ public class Coord2D {
 		return Math.abs( coord.x - this.x ) + Math.abs( coord.y - this.y );
 	}
 	
+	/**
+	 * Finds all neighbouring coordinates of this Coord2D
+	 * 
+	 * @param diagonal True to include diagonal positions
+	 * @return Collection containing all neighbouring positions
+	 */
+	public Collection<Coord2D> getNeighbours( final boolean diagonals ) {
+		final Collection<Coord2D> N = new ArrayList<>( diagonals ? 8 : 4 );
+		
+		// add regular neighbours
+		N.add( move( -1,  0 ) );
+		N.add( move(  1,  0 ) );
+		N.add( move(  0, -1 ) );
+		N.add( move(  0,  1 ) );
+		
+		// diagonals?
+		if( !diagonals ) return N;
+
+		// add diagonal neighbours
+		N.add( move( -1, -1 ) );
+		N.add( move( -1,  1 ) );
+		N.add( move(  1, -1 ) );
+		N.add( move(  1,  1 ) );
+		
+		return N;
+}
+	
+	/**
+	 * Compares this coordinate to another object
+	 * 
+	 * @return True iff the other object is a Coord2D and its x and y values
+	 *   are equal
+	 */
 	@Override
 	public boolean equals( Object obj ) {
 		if( obj == null || !(obj instanceof Coord2D) ) return false;
@@ -127,14 +168,15 @@ public class Coord2D {
 		return new Coord2D( Integer.parseInt( m.group( 1 ) ), Integer.parseInt( m.group( 2 ) ) );
 	}
 	
-	/** @return The string describing the position */
+	/** @return The (x,y) string describing the position */
 	@Override
 	public String toString( ) {
 		return "(" + x + "," + y + ")";
 	}
 	
+	/** @return The unique hash code for the coordinate, used in sets/collections */
 	@Override
 	public int hashCode( ) {
-		return toString( ).hashCode( );
+		return hashcode;
 	}
 }
