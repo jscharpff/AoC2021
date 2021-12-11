@@ -1,11 +1,14 @@
-package util.geometry;
+package util.grid;
 
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.function.Function;
+
+import util.geometry.Coord2D;
 
 /**
  * Class that captures a of a coordinate based grid
@@ -32,7 +35,17 @@ public class CoordGrid<T> implements Iterable<Coord2D> {
 	public CoordGrid( final T defaultValue ) {
 		map = new HashMap<Coord2D, T>( );
 		maxCoord = null;
-		this.defaultValue = defaultValue;
+		setDefaultValue( defaultValue );
+	}
+	
+	/**
+	 * Sets the default value for grid coordinates that do not have a value
+	 * stored.
+	 * 
+	 * @param newdefault The default value to set
+	 */
+	public void setDefaultValue( T newdefault ) {
+		this.defaultValue = newdefault;
 	}
 	
 	/**
@@ -43,7 +56,7 @@ public class CoordGrid<T> implements Iterable<Coord2D> {
 	 * @return The previous value that was set, null if it was not set before
 	 */
 	public T add( final Coord2D coord, final T value ) {
-		updateBounds( coord );
+		updateBoundsAdd( coord );
 		return map.put( coord, value );
 	}
 	
@@ -88,6 +101,18 @@ public class CoordGrid<T> implements Iterable<Coord2D> {
 	public T get( final Coord2D coord, final T valDefault ) {
 		return map.getOrDefault( coord, valDefault );
 	}
+	
+	/**
+	 * Clears the value for a given coordinate and resizes the grid if necessary
+	 * 
+	 * @param coord The coordinate to remove from the grid
+	 * @return The previous value that was stored at the coordinate, can be null 
+	 */
+	public T unset( final Coord2D coord ) {
+		final T oldvalue = map.remove( coord );
+		updateBoundsRemove( coord );
+		return oldvalue;
+	}
 
 	/**
 	 * @return The collection of coordinates that have a set value in the grid
@@ -114,6 +139,21 @@ public class CoordGrid<T> implements Iterable<Coord2D> {
 		return map.containsKey( coord );
 	}
 	
+	/**
+	 * Checks if the given coordinate is within the bounds of the grid. It does
+	 * not check whether the coordinate actually holds a value, simply whether it
+	 * could be `contained' by the coordinates of this grid. To check whether it
+	 * actually stores a value use <code>hasValue( Coord2D )</code>.
+	 * 
+	 * @param coord The coordinate to test
+	 * @return True iff the coordinate's x and y positions are within the bounds
+	 *   of this grid
+	 */
+	public boolean contains( final Coord2D coord ) {
+		return coord.x >= minCoord.x && coord.y >= minCoord.y &&
+				coord.x <= maxCoord.x && coord.y <= maxCoord.y;
+	}
+	
 	/** 
 	 * Determines and returns the size of the current grid, i.e. the span between
 	 * minimal and maximal coordinate
@@ -129,12 +169,41 @@ public class CoordGrid<T> implements Iterable<Coord2D> {
 	}
 	
 	/**
-	 * Update the current min and max coordinates of the gird, given the new
-	 * coordinate
+	 * Update the current min and max coordinates of the gird, if necessary,
+	 * given the new coordinate
 	 * 
 	 * @param coord The new coordinate
 	 */
-	private void updateBounds( final Coord2D coord ) {
+	private void updateBoundsRemove( final Coord2D coord ) {
+		// now empty?
+		if( map.size( ) == 0 ) { minCoord = null; maxCoord = null; return; }
+	
+		// does the removal influence the bounds?
+		if( coord.x > minCoord.x && coord.y > minCoord.y
+				&& coord.x < maxCoord.x && coord.y < maxCoord.y ) return;
+		
+		System.err.println( "recompute" );
+		
+		// too bad, we need to recompute the size
+		int minx = Integer.MAX_VALUE, miny = Integer.MAX_VALUE;
+		int maxx = -1, maxy = -1;
+		for( final Coord2D c : map.keySet( ) ) {
+			if( c.x < minx ) minx = c.x; if( c.y < miny ) miny = c.y;
+			if( c.x > maxx ) maxx = c.x; if( c.y > maxy ) maxy = c.y;
+		}
+		
+		// set the new bounds
+		minCoord = new Coord2D( minx, miny );
+		maxCoord = new Coord2D( maxx, maxy );
+	}	
+	
+	/**
+	 * Update the current min and max coordinates of the gird, if necessary,
+	 * given the new coordinate
+	 * 
+	 * @param coord The new coordinate
+	 */
+	private void updateBoundsAdd( final Coord2D coord ) {
 		if( minCoord == null ) minCoord = coord;
 		if( maxCoord == null ) maxCoord = coord;
 		
@@ -177,6 +246,53 @@ public class CoordGrid<T> implements Iterable<Coord2D> {
 			}
 		};
 	}
+	
+	/**
+	 * Constructs a Coordinate grid from a grid, represented by a list of Strings
+	 * for each row. Columns are separated by the given separator, which may be
+	 * empty for character-based grids that hold a single value per char.  
+	 * 
+	 * @param <U> The type of the data elements to be contained
+	 * @param input The list of strings that describe a n x m grid, one string
+	 *   per row
+	 * @param separator The column separator as regex, "" or null for simple,
+	 *   single character columns
+	 * @param mapfunc The function to map each character into a value
+	 * @param defaultValue The default value to set for the empty entries
+	 * @return The CoordGrid that is constructed from the list of strings
+	 */
+	public static <U> CoordGrid<U> fromCharGrid( final List<String> input, final String separator, final Function<String, U> mapfunc, final U defaultValue ) {
+		final CoordGrid<U> grid = new CoordGrid<>( defaultValue );
+		
+		// fill in blank separator iff it is null
+		final String sep = separator != null ? separator : ""; 
+		
+		int y = -1;
+		for( final String row : input ) {
+			y++;
+			int x = -1;
+			for( final String col : row.split( sep ) ) {
+				x++;
+				grid.add( new Coord2D( x, y ), mapfunc.apply( col ) );
+			}
+		}
+
+		return grid;
+	}
+	
+	/**
+	 * Shorthand function to construct an Integer-valued CoordGrid from a char
+	 * grid. Can only hold integer values 0-9 (as the input is a char grid) in
+	 * parsed elements, defaultValue of non-set coordinates will be -1.
+	 * 
+	 * @param input The list of row strings that describe the digits on that row 
+	 * @return An digit-based CoordGrid with the values as read from the input
+	 *   and defaultValue -1 for non-contained coordinates
+	 */
+	public static CoordGrid<Integer> fromDigitGrid( final List<String> input ) {
+		return fromCharGrid( input, null, Integer::parseInt, -1 );
+	}
+	
 
 	/**
 	 * Generates a grid-like output of the CoordGrid, from top-left coordinate to

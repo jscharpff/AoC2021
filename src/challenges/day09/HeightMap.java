@@ -7,7 +7,7 @@ import java.util.Set;
 import java.util.Stack;
 
 import util.geometry.Coord2D;
-import util.geometry.CoordGrid;
+import util.grid.CoordGrid;
 
 public class HeightMap {
 	/** The coordinate grid */
@@ -15,9 +15,11 @@ public class HeightMap {
 	
 	/**
 	 * Creates a new height map
+	 * 
+	 * @param input The map as list of strings, one string per row
 	 */
-	public HeightMap( ) {
-		map = new CoordGrid<Integer>( -1 );
+	public HeightMap( final List<String> input ) {
+		map = CoordGrid.fromDigitGrid( input );
 	}
 	
 	/**
@@ -67,7 +69,7 @@ public class HeightMap {
 		final Set<Coord2D> explored = new HashSet<>( ); 
 		explore.push( start );
 		
-		// explore from current node
+		// continue until the list of coordinates to explore is exhausted
 		while( explore.size( ) > 0 ) {
 			// explore the next coord on our backlog
 			final Coord2D node = explore.pop( );
@@ -95,27 +97,7 @@ public class HeightMap {
 		// return the size of the basin
 		return explored.size( );
 	}
-	
-	/**
-	 * Creates a new height map from a list of strings
-	 * 
-	 * @param str The map as list of strings, one string per row
-	 * @return The height map
-	 */
-	public static HeightMap fromString( final List<String> str ) {
-		final HeightMap h = new HeightMap( );
-		
-		int y = -1;
-		for( final String row : str ) {
-			y++;
-			for( int x = 0; x < row.length( ); x++ ) {
-				h.map.add( new Coord2D( x, y ), Integer.parseInt( "" + row.charAt( x ) ) );
-			}
-		}
-		
-		return h;
-	}
-	
+
 	/**
 	 * @return The visualisation of the height map as a grid of height levels
 	 */

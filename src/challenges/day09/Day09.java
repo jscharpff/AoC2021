@@ -41,7 +41,7 @@ public class Day09 {
 	 */
 	public static long part1( final List<String> input ) {
 		// build height map and find lowest points
-		final HeightMap hm = HeightMap.fromString( input );
+		final HeightMap hm = new HeightMap( input );
 		final List<Coord2D> lowest = hm.getLowestPoints( );
 		
 		// sum over risk levels of lowest points (height + 1)
@@ -59,7 +59,7 @@ public class Day09 {
 	 * @return The product of the 3 largest basins
 	 */
 	public static long part2( final List<String> input ) {
-		final HeightMap hm = HeightMap.fromString( input );		
+		final HeightMap hm = new HeightMap( input );		
 		final List<Coord2D> lowest = hm.getLowestPoints( );
 		
 		final Map<Coord2D, Integer> basins = new HashMap<>( lowest.size( ) );

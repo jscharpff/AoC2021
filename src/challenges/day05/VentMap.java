@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import util.geometry.Coord2D;
-import util.geometry.CoordGrid;
 import util.geometry.Line2D;
+import util.grid.CoordGrid;
 
 /**
  * Class capturing all hydrothermal vent outputs
