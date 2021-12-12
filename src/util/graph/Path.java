@@ -1,9 +1,7 @@
-package challenges.day12;
+package util.graph;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import util.graph.Node;
 
 /**
  * Container that holds a path of successive nodes

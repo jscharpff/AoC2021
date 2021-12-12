@@ -8,6 +8,7 @@ import java.util.Map;
 
 import util.graph.Graph;
 import util.graph.Node;
+import util.graph.Path;
 
 public class CaveSystem {
 	/** The graph that represents the case system */
