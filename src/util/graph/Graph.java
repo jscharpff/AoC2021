@@ -1,10 +1,10 @@
 package util.graph;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -55,8 +55,8 @@ public class Graph {
 	/**
 	 * @return The set of nodes
 	 */
-	public Set<Node> getNodes( ) {
-		return (Set<Node>) nodes.values( );
+	public Collection<Node> getNodes( ) {
+		return nodes.values( );
 	}
 	
 	/**
