@@ -2,7 +2,9 @@ package challenges.day12;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import util.graph.Graph;
 import util.graph.Node;
@@ -10,6 +12,12 @@ import util.graph.Node;
 public class CaveSystem {
 	/** The graph that represents the case system */
 	protected final Graph graph;
+	
+	/** The type of node */
+	protected enum NodeType { SmallCave, LargeCave, Start, End };
+	
+	/** The cache of node types, for quick reference */
+	protected Map<Node, NodeType> nodetypes;
 	
 	/**
 	 * Creates a new cave system from a list of strings describing the paths
@@ -19,6 +27,20 @@ public class CaveSystem {
 	 */
 	public CaveSystem( final List<String> input ) {
 		graph = Graph.fromStringList( input );
+		
+		// classify nodes and store for future use
+		nodetypes = new HashMap<>( graph.size( ) );
+		for( final Node n : graph.getNodes( ) ) {
+			final String lbl = n.getLabel( );
+			
+			final NodeType ntype;
+			if( lbl.equals( "start" ) ) ntype = NodeType.Start;
+			else if( lbl.equals( "end" ) ) ntype = NodeType.End;
+			else if( lbl.matches( "[A-Z]+" ) ) ntype = NodeType.LargeCave;
+			else ntype = NodeType.SmallCave;
+			
+			nodetypes.put( n, ntype );
+		}
 	}
 	
 	/** @return Starting node of the cave system */
@@ -26,29 +48,6 @@ public class CaveSystem {
 	
 	/** @return Ending node of cave system */
 	public Node getEnd( ) { return graph.getNode( "end" ); }
-	
-	/**
-	 * Checks whether the node represents a large cave, i.e. one that is
-	 * interesting enough to visit more than once
-	 * 
-	 * @param node The node to check
-	 * @return True iff the node represents a large cave
-	 */
-	public static boolean isLargeCave( final Node node ) {
-		return node.getLabel( ).matches( "[A-Z]+" );
-	}
-
-	/**
-	 * Checks whether the node represents a small cave, i.e. one that can be
-	 * visited only once
-	 * 
-	 * @param node The node to check
-	 * @return True iff the node represents a small cave
-	 */
-	public static boolean isSmallCave( final Node node ) {
-		if( isLargeCave( node ) ) return false;
-		return !node.getLabel( ).equals( "start" ) && !node.getLabel( ).equals( "end" );
-		}
 
 	/**
 	 * Finds all unique paths from node A to B that visit small caves not more
@@ -92,10 +91,15 @@ public class CaveSystem {
 		
 		// no, try to extend the path by one of the unvisited nodes
 		for( final Node n : node.getNeighbours( ) ) {
-			// can we visit this node again?
-			if( !path.contains( n ) || isLargeCave( n ) || (isSmallCave( n ) && allowtwice && !path.hasSmallTwice( )) ) {			
-				// yes, try and explore from here
-				findAllRoutes( paths, path.extend( n ), end, allowtwice );			
+			// get the type of node we are exploring
+			final NodeType ntype = nodetypes.get( n );
+			
+			// can we visit this node (again)?
+			if( !path.contains( n ) || ntype == NodeType.LargeCave || (ntype == NodeType.SmallCave && allowtwice) ) {			
+				// yes! try and explore from here, but only allow one small cave twice
+				// (if it was allowed in the first place)
+				final boolean allowed = allowtwice && !(ntype == NodeType.SmallCave && path.contains( n ));
+				findAllRoutes( paths, path.extend( n ), end, allowed );			
 			}
 		}
 	}

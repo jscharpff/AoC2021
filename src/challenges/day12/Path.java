@@ -14,9 +14,6 @@ public class Path {
 	/** The nodes in this path, from start to end */
 	protected List<Node> nodes;
 	
-	/** True iff the path has a small node that is visited twice */
-	protected final boolean visitedtwice;
-	
 	/**
 	 * Creates a new path from the given start node
 	 * 
@@ -25,7 +22,6 @@ public class Path {
 	public Path( final Node start ) {
 		this.nodes = new ArrayList<>( 1 );
 		nodes.add( start );
-		visitedtwice = false;
 	}
 	
 	/**
@@ -34,13 +30,6 @@ public class Path {
 	private Path( final Path p, final Node newnode ) {
 		this.nodes = new ArrayList<>( p.size() + 1 );
 		this.nodes.addAll( p.nodes );
-		boolean twice = p.visitedtwice;
-		
-		// add the new node and check if this leads to a small node being visited twice 
-		if( !twice ) {
-			if( CaveSystem.isSmallCave( newnode ) && nodes.contains( newnode ) ) twice = true;
-		}
-		this.visitedtwice = twice;
 		this.nodes.add( newnode );
 	}
 	
@@ -48,7 +37,7 @@ public class Path {
 	 * @return The last node in the path
 	 */
 	public Node getEnd( ) {
-		return nodes.get( nodes.size( ) - 1 );
+		return nodes.get( size( ) - 1 );
 	}
 	
 	/**
@@ -59,16 +48,7 @@ public class Path {
 	public Path extend( final Node node ) {
 		return new Path( this, node );
 	}
-	
-	/**
-	 * Checks if the path has a small cave that is visited twice
-	 * 
-	 * @return True iff the path has one such cave node
-	 */
-	public boolean hasSmallTwice( ) {
-		return visitedtwice;
-	}
-	
+
 	/**
 	 * Checks if the path already contains the node
 	 * 
