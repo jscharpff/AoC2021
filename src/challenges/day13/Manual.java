@@ -40,6 +40,7 @@ public class Manual {
 	public void fold( final int x, final int y ) {
 		if( x < 0 ) throw new IllegalArgumentException( "Invalid fold line value x=" + x );
 		if( y < 0 ) throw new IllegalArgumentException( "Invalid fold line value y=" + y );
+		if( x != 0 && y != 0 ) throw new IllegalArgumentException( "Can only fold over a single axis" );
 
 		// copy the part above the fold line into a new CoordGrid
 		// and fold the coordinates under the fold

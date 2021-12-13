@@ -9,6 +9,7 @@ import java.util.Set;
 import java.util.function.Function;
 
 import util.geometry.Coord2D;
+import util.geometry.Window2D;
 
 /**
  * Class that captures a of a coordinate based grid
@@ -20,9 +21,9 @@ import util.geometry.Coord2D;
 public class CoordGrid<T> implements Iterable<Coord2D> {	
 	/** The map that backs the grid */
 	protected final Map<Coord2D, T> map;
-
+	
 	/** Current size of the vent grid, given by a minimal and maximal coordinate */
-	private Coord2D minCoord, maxCoord;
+	private Window2D window;
 	
 	/** Default value for all non-set coordinates */
 	protected T defaultValue;
@@ -34,7 +35,7 @@ public class CoordGrid<T> implements Iterable<Coord2D> {
 	 */
 	public CoordGrid( final T defaultValue ) {
 		map = new HashMap<Coord2D, T>( );
-		maxCoord = null;
+		window = new Window2D( );
 		setDefaultValue( defaultValue );
 	}
 	
@@ -56,7 +57,7 @@ public class CoordGrid<T> implements Iterable<Coord2D> {
 	 * @return The previous value that was set, null if it was not set before
 	 */
 	public T add( final Coord2D coord, final T value ) {
-		updateBoundsAdd( coord );
+		window.include( coord );
 		return map.put( coord, value );
 	}
 	
@@ -110,7 +111,8 @@ public class CoordGrid<T> implements Iterable<Coord2D> {
 	 */
 	public T unset( final Coord2D coord ) {
 		final T oldvalue = map.remove( coord );
-		updateBoundsRemove( coord );
+		// does the removal influence the bounds? if yes, update
+		if( window.onBorder( coord ) ) window.resize( getKeys( ) );
 		return oldvalue;
 	}
 	
@@ -122,7 +124,8 @@ public class CoordGrid<T> implements Iterable<Coord2D> {
 	public void unsetAll( final Collection<Coord2D> coords ) {
 		for( final Coord2D c : coords )
 			map.remove( c );
-		updateBounds( );
+		
+		window.resize( getKeys( ) );
 	}
 
 	/**
@@ -161,8 +164,7 @@ public class CoordGrid<T> implements Iterable<Coord2D> {
 	 *   of this grid
 	 */
 	public boolean contains( final Coord2D coord ) {
-		return coord.x >= minCoord.x && coord.y >= minCoord.y &&
-				coord.x <= maxCoord.x && coord.y <= maxCoord.y;
+		return window.contains( coord );
 	}
 	
 	/** 
@@ -172,62 +174,8 @@ public class CoordGrid<T> implements Iterable<Coord2D> {
 	 * @return The size of the current grid as 2D coordinate or null if empty
 	 */
 	public Coord2D size( ) {
-		if( map.size( ) == 0 ) return null;
-		
-		// compute distance between points plus one, this is the span length between
-		// min and max coords
-		return maxCoord.diffAbs( minCoord ).move( 1, 1 );
+		return window.size( );
 	}
-	
-	/**
-	 * Update the current min and max coordinates of the gird, if necessary,
-	 * given the new coordinate
-	 * 
-	 * @param coord The new coordinate
-	 */
-	private void updateBoundsRemove( final Coord2D coord ) {
-		// now empty?
-		if( map.size( ) == 0 ) { minCoord = null; maxCoord = null; return; }
-	
-		// does the removal influence the bounds?
-		if( coord.x > minCoord.x && coord.y > minCoord.y
-				&& coord.x < maxCoord.x && coord.y < maxCoord.y ) return;
-				
-		// too bad, we need to recompute the size
-		updateBounds( );
-	}
-	
-	/**
-	 * Performs a single recompute of all bounds
-	 */
-	private void updateBounds( ) { 
-		int minx = Integer.MAX_VALUE, miny = Integer.MAX_VALUE;
-		int maxx = -1, maxy = -1;
-		for( final Coord2D c : map.keySet( ) ) {
-			if( c.x < minx ) minx = c.x; if( c.y < miny ) miny = c.y;
-			if( c.x > maxx ) maxx = c.x; if( c.y > maxy ) maxy = c.y;
-		}
-		
-		// set the new bounds
-		minCoord = new Coord2D( minx, miny );
-		maxCoord = new Coord2D( maxx, maxy );
-	}	
-	
-	/**
-	 * Update the current min and max coordinates of the gird, if necessary,
-	 * given the new coordinate
-	 * 
-	 * @param coord The new coordinate
-	 */
-	private void updateBoundsAdd( final Coord2D coord ) {
-		if( minCoord == null ) minCoord = coord;
-		if( maxCoord == null ) maxCoord = coord;
-		
-		// expand the boundaries if needed
-		minCoord = new Coord2D( Math.min( minCoord.x, coord.x ), Math.min( minCoord.y, coord.y ) );
-		maxCoord = new Coord2D( Math.max( maxCoord.x, coord.x ), Math.max( maxCoord.y, coord.y ) );
-	}
-	
 	
 	/**
 	 * Creates an Iterator that goes over all coordinates in the grid, including
@@ -239,29 +187,7 @@ public class CoordGrid<T> implements Iterable<Coord2D> {
 	 */
 	@Override
 	public Iterator<Coord2D> iterator( ) {
-		return new Iterator<Coord2D>( ) {
-			/** Current coordinate */
-			protected Coord2D curr = minCoord.move( -1, 0 );
-			
-			/** Start coordinate */
-			protected final Coord2D start = minCoord;
-			
-			/** End coordinate */
-			protected final Coord2D end = maxCoord;
-			
-			@Override
-			public Coord2D next( ) {
-				if( curr.x < end.x ) curr = curr.move( 1, 0 );
-				else curr = new Coord2D( start.x, curr.y + 1 );
-
-				return curr;
-			}
-			
-			@Override
-			public boolean hasNext( ) {
-				return !end.equals( curr );
-			}
-		};
+		return window.iterator( );
 	}
 	
 	/**
@@ -278,12 +204,13 @@ public class CoordGrid<T> implements Iterable<Coord2D> {
 	 * @param defaultValue The default value to set for the empty entries
 	 * @return The CoordGrid that is constructed from the list of strings
 	 */
-	public static <U> CoordGrid<U> fromCharGrid( final List<String> input, final String separator, final Function<String, U> mapfunc, final U defaultValue ) {
+	public static <U> CoordGrid<U> fromStringList( final List<String> input, final String separator, final Function<String, U> mapfunc, final U defaultValue ) {
 		final CoordGrid<U> grid = new CoordGrid<>( defaultValue );
 		
 		// fill in blank separator iff it is null
 		final String sep = separator != null ? separator : ""; 
 		
+		// parse rows and columns
 		int y = -1;
 		for( final String row : input ) {
 			y++;
@@ -307,7 +234,7 @@ public class CoordGrid<T> implements Iterable<Coord2D> {
 	 *   and defaultValue -1 for non-contained coordinates
 	 */
 	public static CoordGrid<Integer> fromDigitGrid( final List<String> input ) {
-		return fromCharGrid( input, null, Integer::parseInt, -1 );
+		return fromStringList( input, null, Integer::parseInt, -1 );
 	}
 	
 
@@ -331,10 +258,10 @@ public class CoordGrid<T> implements Iterable<Coord2D> {
 	 */
 	public String toString( final Function<T, String> stringFunc ) {
 		String res = "";
-		Coord2D prev = minCoord;
+		Coord2D prev = null;
 		for( final Coord2D c : this ) {
 			// new line after every row end
-			if( prev.y != c.y ) res += "\n";
+			if( prev == null || prev.y != c.y ) res += "\n";
 			try {
 				res += stringFunc.apply( get( c ) );
 			} catch( final NullPointerException e ) {
