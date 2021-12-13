@@ -113,6 +113,17 @@ public class CoordGrid<T> implements Iterable<Coord2D> {
 		updateBoundsRemove( coord );
 		return oldvalue;
 	}
+	
+	/**
+	 * Clears an entire set of coordinates at once, only recomputes bounds once
+	 * 
+	 * @param coords The set of coordinates to unset 
+	 */
+	public void unsetAll( final Collection<Coord2D> coords ) {
+		for( final Coord2D c : coords )
+			map.remove( c );
+		updateBounds( );
+	}
 
 	/**
 	 * @return The collection of coordinates that have a set value in the grid
@@ -181,10 +192,15 @@ public class CoordGrid<T> implements Iterable<Coord2D> {
 		// does the removal influence the bounds?
 		if( coord.x > minCoord.x && coord.y > minCoord.y
 				&& coord.x < maxCoord.x && coord.y < maxCoord.y ) return;
-		
-		System.err.println( "recompute" );
-		
+				
 		// too bad, we need to recompute the size
+		updateBounds( );
+	}
+	
+	/**
+	 * Performs a single recompute of all bounds
+	 */
+	private void updateBounds( ) { 
 		int minx = Integer.MAX_VALUE, miny = Integer.MAX_VALUE;
 		int maxx = -1, maxy = -1;
 		for( final Coord2D c : map.keySet( ) ) {
@@ -207,6 +223,7 @@ public class CoordGrid<T> implements Iterable<Coord2D> {
 		if( minCoord == null ) minCoord = coord;
 		if( maxCoord == null ) maxCoord = coord;
 		
+		// expand the boundaries if needed
 		minCoord = new Coord2D( Math.min( minCoord.x, coord.x ), Math.min( minCoord.y, coord.y ) );
 		maxCoord = new Coord2D( Math.max( maxCoord.x, coord.x ), Math.max( maxCoord.y, coord.y ) );
 	}
