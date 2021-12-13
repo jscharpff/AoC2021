@@ -53,11 +53,13 @@ public class Day13 {
 		while( !strin[++idx].equals( "" ) ) dots.add( strin[idx] );
 		while( ++idx < strin.length ) folds.add( strin[idx] );
 		
-		// process input, first part describes the initial set of dots
+		// process input, first part describes the initial set of dots that is used
+		// to construct the initial manual from
 		final Manual manual = new Manual( dots );
 		
-		// then fold once in the first part
+		// now process and perform the folding instructions
 		for( final String f : folds ) {
+			// parse the instruction
 			final Matcher m = Pattern.compile( "fold along ([xy])=(\\d+)" ).matcher( f );
 			if( !m.find( ) ) throw new RuntimeException( "Invalid fold line description: " + m );
 
@@ -68,7 +70,7 @@ public class Day13 {
 			else
 				manual.fold( 0, fold );
 			
-			// only once in part 1, otherwise keep folding
+			// for part 1 we only fold once and return the number of resulting dots
 			if( foldonce ) return manual.getDotCount( );
 		}
 
