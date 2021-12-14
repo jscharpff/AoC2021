@@ -64,17 +64,13 @@ public class Day13 {
 			if( !m.find( ) ) throw new RuntimeException( "Invalid fold line description: " + m );
 
 			// perform the fold
-			final int fold = Integer.parseInt( m.group( 2 ) );
-			if( m.group( 1 ).equals( "x" ) )		
-				manual.fold( fold, 0 );
-			else
-				manual.fold( 0, fold );
+			manual.fold( m.group( 1 ).equals( "y" ), Integer.parseInt( m.group( 2 ) ) );
 			
 			// for part 1 we only fold once and return the number of resulting dots
 			if( foldonce ) return manual.getDotCount( );
 		}
 
-		// in part 2 just print the resulting digits
+		// in part 2 just print the resulting dots
 		System.out.println( manual );
 		return 0;
 	}

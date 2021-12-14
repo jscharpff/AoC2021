@@ -34,28 +34,23 @@ public class Manual {
 	 * left. The result of the operation is that the manual is resized and
 	 * updated.
 	 * 
-	 * @param x The x value to fold at (vertical folding)
-	 * @param y The y value to fold at (horizontal folding) 
+	 * @param horizontal True for horizontal folding, false for vertical 
+	 * @param foldline The axis value to fold at, e.g. fold at x=foldline or
+	 *   y=foldline
 	 */
-	public void fold( final int x, final int y ) {
-		if( x < 0 ) throw new IllegalArgumentException( "Invalid fold line value x=" + x );
-		if( y < 0 ) throw new IllegalArgumentException( "Invalid fold line value y=" + y );
-		if( x != 0 && y != 0 ) throw new IllegalArgumentException( "Can only fold over a single axis" );
+	public void fold( final boolean horizontal, final int foldline ) {
+		if( foldline < 0 ) throw new IllegalArgumentException( "Invalid fold line value " + foldline );
 
 		// copy the part above the fold line into a new CoordGrid
 		// and fold the coordinates under the fold
 		final CoordGrid<Boolean> copy = new CoordGrid<>( false );
 		for( final Coord2D c : dots.getKeys( ) ) {
-			// flip over x-axis?
-			if( x != 0 ) {
-				if( c.x <= x ) copy.add( c, true );			
-				else copy.add( new Coord2D( 2 * x - c.x, c.y ), true );
-			}
-
-			// flip over y-axis?
-			if( y != 0 ) {
-				if( c.y <= y ) copy.add( c, true );
-				else copy.add( new Coord2D( c.x, 2 * y - c.y ), true );
+			if( horizontal ) {
+				if( c.y <= foldline ) copy.add( c, true );
+				else copy.add( new Coord2D( c.x, 2 * foldline - c.y ), true );
+			} else {
+				if( c.x <= foldline ) copy.add( c, true );			
+				else copy.add( new Coord2D( 2 * foldline - c.x, c.y ), true );
 			}
 		}
 
