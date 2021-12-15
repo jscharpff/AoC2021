@@ -134,7 +134,7 @@ public class Window2D implements Iterable<Coord2D> {
 	 */
 	public Coord2D size( ) {
 		if( empty( ) ) return null;
-		return new Coord2D( maxCoord.x - minCoord.x, maxCoord.y - minCoord.y );
+		return new Coord2D( maxCoord.x - minCoord.x + 1, maxCoord.y - minCoord.y + 1 );
 	}
 	
 	/** @return The minimal coordinate values */
