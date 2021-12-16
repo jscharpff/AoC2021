@@ -20,14 +20,16 @@ public class Day16 {
 		final String input = new FileReader( Day16.class.getResource( "day16_input.txt" ) ).readLines( ).get( 0 );
 		
 		System.out.println( "---[ Part 1 ]---" );
+		System.out.println( "Examples:" );
 		for( final String s : ex_input )
-			System.out.println( "Example: " + part1( s ) );
-		System.out.println( "\nAnswer : " + part1( input ) );
+			 System.out.println( "> " + s + " => " + part1( s ) );
+		System.out.println( "\nAnswer: " + part1( input ) );
 
 		System.out.println( "\n---[ Part 2 ]---" );
+		System.out.println( "Examples:" );
 		for( final String s : ex_input )
-			System.out.println( "Example: " + part2( s ) );
-		System.out.println( "\nAnswer : " + part2( input ) );	
+			 System.out.println( "> " + s + " => " + part2( s ) );
+		System.out.println( "\nAnswer: " + part2( input ) );	
 	}
 	
 	/**

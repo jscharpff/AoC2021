@@ -101,9 +101,9 @@ public class OperandPacket extends Packet {
 			case Min: return args.reduce( Math::min ).getAsLong( );
 			case Max: return args.reduce( Math::max ).getAsLong( );
 			
-			case GreaterThan: return packets[0].reduce( ) > packets[1].reduce( ) ? 1 : 0;
-			case LessThan: return packets[0].reduce( ) < packets[1].reduce( ) ? 1 : 0;
-			case Equals: return packets[0].reduce( ) == packets[1].reduce( ) ? 1 : 0;
+			case GreaterThan: return args.reduce( (x,y) -> x > y ? 1 : 0 ).getAsLong( );
+			case LessThan: return args.reduce( (x,y) -> x < y ? 1 : 0 ).getAsLong( );
+			case Equals: return args.reduce( (x,y) -> x == y ? 1 : 0 ).getAsLong( );
 			
 			default:
 				throw new RuntimeException( "Operand not implemented: "+ op );

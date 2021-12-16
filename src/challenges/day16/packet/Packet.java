@@ -22,7 +22,7 @@ public abstract class Packet {
 	}
 	
 	/**
-	 * Reduces the packet to an integer value by either performing its operation
+	 * Reduces the packet to a numerical value by either performing its operation
 	 * or simply returning its value in case of a literal
 	 * 
 	 * @return The reduced value 
@@ -30,8 +30,8 @@ public abstract class Packet {
 	public abstract long reduce( );
 	
 	/** @return String describing the packet */
-	@Override
-	public abstract String toString( );
+	// explicitly declaring this enforces its implementation in child classes
+	@Override public abstract String toString( );
 	
 	/**
 	 * Decodes a hexadecimal input string into packets
@@ -40,7 +40,7 @@ public abstract class Packet {
 	 * @return The outer-level packet
 	 */
 	public static Packet fromHex( final String input ) {
-		// decode the hex payload 
+		// convert the hex payload into a consumable Payload object 
 		final Payload data = new Payload( input );
 		
 		// recursively parse the packages encoded in the bit string
@@ -61,17 +61,19 @@ public abstract class Packet {
 
 		// create correct package type and let it process the package data
 		switch( typeID ) {
+			// a literal value packet
 			case LiteralPacket.TypeID:
 				return LiteralPacket.decode( version, data );
 				
+			// undecided yet, can be an operand
 			default:
 				// check if this is an operator
 				final Operand op = Operand.fromTypeID( typeID );
-				if( op != null )
-					return OperandPacket.decode( version, op, data );
-
-				throw new RuntimeException( "Unknown package type in input: " + typeID );
+				if( op != null ) return OperandPacket.decode( version, op, data );
 		}
+
+		// there is no known packet type with the type ID   
+		throw new RuntimeException( "Unknown package type in input: " + typeID );
 	}
 	
 	/**
