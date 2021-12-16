@@ -226,6 +226,12 @@ public class BitString implements Iterable<Boolean> {
 		return value;
 	}
 	
+	/** @return The integer value of the bit string (unsafe cast!) */
+	public int toInt( ) {
+		return (int)value;
+	}
+	
+	
 	/**
 	 * Creates a bit string from a String representation 
 	 * 
@@ -237,6 +243,19 @@ public class BitString implements Iterable<Boolean> {
 	public static BitString fromString( final String str ) throws IllegalArgumentException {
 		final BitString b = new BitString( str.length( ) );
 		b.value = Long.valueOf( str, 2 );
+		return b;
+	}
+	
+	/**
+	 * Converts a hexadecimal string into a bit string with a length of 4 times
+	 * the hex string
+	 * 
+	 * @param hex The hexadecimal input string
+	 * @return The bitstring
+	 */
+	public static BitString fromHex( final String hex ) {
+		final BitString b = new BitString( hex.length( ) * 4 );
+		b.value = Integer.parseInt( hex, 16 );
 		return b;
 	}
 	
