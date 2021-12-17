@@ -182,4 +182,11 @@ public class Window2D implements Iterable<Coord2D> {
 			}
 		};
 	}
+	
+	/** @return The string (xmin,ymin)-(xmax,ymax) describing the 2D window */
+	@Override
+	public String toString( ) {
+		if( empty( ) ) return "(empty)";
+		return minCoord.toString( ) + "-" + maxCoord.toString( ); 
+	}
 }
