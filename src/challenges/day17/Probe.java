@@ -38,42 +38,36 @@ public class Probe {
 	 * 
 	 * @return The highest achieved altitude
 	 */
-	public long findHighestHit( ) {
-		long maxalt = -1;
-		
+	public long findHighestHit( ) {		
 		// get range of X values to consider
 		final Set<Integer> xvelocities = getXVelocities(  );
 
 		// and the range of y values to consider. Additionally, sort y velocities
-		// on value, so the highest velocity is evaluated first per x velocity. The
-		// highest y velocity that hits is guaranteed to reach the highest altitude
+		// on value, so the highest velocity is evaluated first for every x
+		// velocity. Then, the first y velocity that hits is guaranteed to reach
+		// the highest altitude
 		final List<Integer> yvelocities = new ArrayList<>( getYVelocities( ) );
 		Collections.sort( yvelocities, new Comparator<Integer>( ) {
 			// sort high to low
 			public int compare(Integer o1, Integer o2) { return o2.intValue( ) - o1.intValue( ); }; }
 		);						
 		
-		// now evaluate all combinations
-		for( final int vx : xvelocities ) {
-			for( final int vy : yvelocities ) {
+		// now evaluate all combinations, starting with highest y velocities first
+		for( final int vy : yvelocities ) {
+			for( final int vx : xvelocities ) {
 				final Coord2D vel = new Coord2D( vx, vy );
 				
 				// check if we hit the target?
 				final Coord2D hit = fire( vel );
 				if( hit == null ) continue;
 				
-				// yes, does this one have a better height than our current best?
-				final long maxy = traceMaxHeight( vel );
-				if( maxy > maxalt ) maxalt = maxy;
-				
-				// no need to look for slower y velocities, highest velocity hits are
-				// guaranteed to achieve the maximum height due to the pre-processing
-				// of the data set 
-				break;
+				// yes, as this is the highest y velocity, it must be the greatest
+				// height we can attain
+				return traceMaxHeight( vel );
 			}
 		}
 
-		return maxalt;
+		throw new RuntimeException( "Falied to hit the target!" );
 	}
 	
 	/**
