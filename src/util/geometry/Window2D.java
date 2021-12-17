@@ -148,6 +148,30 @@ public class Window2D implements Iterable<Coord2D> {
 		if( empty( ) ) throw new RuntimeException( "The current window is not defined" );
 		return maxCoord;
 	}
+	
+	/** @return The lowest value of the x axis */
+	public int getMinX( ) { 
+		if( empty( ) ) throw new RuntimeException( "The current window is not defined" );
+		return getMinCoord( ).x;
+	}
+
+	/** @return The lowest value of the y axis */
+	public int getMinY( ) { 
+		if( empty( ) ) throw new RuntimeException( "The current window is not defined" );
+		return getMinCoord( ).y;
+	}
+
+	/** @return The highest value of the x axis */
+	public int getMaxX( ) { 
+		if( empty( ) ) throw new RuntimeException( "The current window is not defined" );
+		return getMaxCoord( ).x;
+	}
+
+	/** @return The highest value of the y axis */
+	public int getMaxY( ) { 
+		if( empty( ) ) throw new RuntimeException( "The current window is not defined" );
+		return getMaxCoord( ).y;
+	}
 
 	/**
 	 * Creates an Iterator that goes over all coordinates in the window
