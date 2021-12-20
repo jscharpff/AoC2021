@@ -36,6 +36,7 @@ public class Day20 {
 	 *
 	 * @param input The input with the algorithm on one line, a blank line and
 	 *   the images on the remaining lines   
+	 * @param enhance The number of times to enhance the image
 	 * @return The count of pixels that are lit in the resulting image
 	 */
 	public static long enhanceImage( final List<String> input, final int enhance ) {

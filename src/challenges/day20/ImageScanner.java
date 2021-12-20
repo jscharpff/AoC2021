@@ -16,6 +16,8 @@ public class ImageScanner {
 	
 	/**
 	 * Creates a new image scanner
+	 * 
+	 * @param pixmap The pixel mapping algorithm
 	 */
 	private ImageScanner( final boolean[] pixmap ) {
 		this.pixmap = pixmap;
@@ -29,16 +31,15 @@ public class ImageScanner {
 	 * @return An enhanced image
 	 */
 	public Image enhance( final Image input, final int step ) {
-		// create a new output image
 		// the number of steps is required to determine how to deal with "unknown"
 		// parts of the image, but only in case pixmap[0] is set because that
-		// causes all 000000000 bit strings outside the image to set a pixel
+		// causes all 000000000 bit strings outside the image to set a pixel in
+		// odd numbered enhancements
 		final Image output = new Image( step % 2 == 0 ? pixmap[0] : false );
 						
-		final int b = 1;
 		final Window2D win = input.window( );
-		for( int x = win.getMinX( ) - b; x <= win.getMaxX( ) + b; x++ ) {
-			for( int y = win.getMinY( ) - b; y <= win.getMaxY( ) + b; y++ ) {
+		for( int x = win.getMinX( ) - 1; x <= win.getMaxX( ) + 1; x++ ) {
+			for( int y = win.getMinY( ) - 1; y <= win.getMaxY( ) + 1; y++ ) {
 				// convert to coordinate
 				final Coord2D coord = new Coord2D( x, y );
 				

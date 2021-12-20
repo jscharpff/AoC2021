@@ -47,6 +47,7 @@ public class Image {
 	 * Sets the pixel at x,y to be on or off
 	 * 
 	 * @param coord The coordinate
+	 * @param value The value to set, true for on
 	 */
 	public void set( final Coord2D coord, final boolean value ) {
 		// only add if not equal to default to keep the grid sparse
