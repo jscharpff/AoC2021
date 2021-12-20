@@ -151,7 +151,7 @@ public class BitString implements Iterable<Boolean> {
 	 */
 	private long indexToBitMask( final int index, final boolean negate ) {
 		long mask = (long)Math.pow( 2, index );
-		if( negate ) mask = negate( ~mask );
+		if( negate ) mask = negate( mask );
 		return mask;
 	}
 	

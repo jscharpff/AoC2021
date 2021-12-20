@@ -182,6 +182,12 @@ public class Window2D implements Iterable<Coord2D> {
 	 */
 	@Override
 	public Iterator<Coord2D> iterator( ) {
+		// no coordinates in this window?
+		if( empty( ) ) return new Iterator<Coord2D>( ) { 
+			@Override	public boolean hasNext( ) { return false; }
+			@Override	public Coord2D next( ) { return null; }
+		};
+		
 		return new Iterator<Coord2D>( ) {
 			/** Current coordinate */
 			protected Coord2D curr = minCoord.move( -1, 0 );

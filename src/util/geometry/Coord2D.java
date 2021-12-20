@@ -162,7 +162,7 @@ public class Coord2D {
 	 * @throws IllegalArgumentException if the format of the coordinate is incorrect
 	 */
 	public static Coord2D fromString( final String coord ) throws IllegalArgumentException {
-		final Matcher m = Pattern.compile( "^\\(?\\s*(\\d+)\\s*,\\s*(\\d+)\\s*\\)?$" ).matcher( coord.trim( ) );
+		final Matcher m = Pattern.compile( "^\\(?\\s*(-?\\d+)\\s*,\\s*(-?\\d+)\\s*\\)?$" ).matcher( coord.trim( ) );
 		if( !m.find( ) ) throw new IllegalArgumentException( "Invalid coordinate: " + coord );
 		
 		return new Coord2D( Integer.parseInt( m.group( 1 ) ), Integer.parseInt( m.group( 2 ) ) );

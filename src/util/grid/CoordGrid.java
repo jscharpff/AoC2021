@@ -39,6 +39,11 @@ public class CoordGrid<T> implements Iterable<Coord2D> {
 		setDefaultValue( defaultValue );
 	}
 	
+	/** @return The current default value for coordinates witout a value */
+	public T getDefaultValue( ) {
+		return defaultValue;
+	}
+	
 	/**
 	 * Sets the default value for grid coordinates that do not have a value
 	 * stored.
@@ -175,6 +180,11 @@ public class CoordGrid<T> implements Iterable<Coord2D> {
 	 */
 	public Coord2D size( ) {
 		return window.size( );
+	}
+	
+	/** @return The current window spanned by this grid */
+	public Window2D window( ) {
+		return window;
 	}
 	
 	/**
