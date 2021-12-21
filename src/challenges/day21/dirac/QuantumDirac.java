@@ -22,9 +22,6 @@ public class QuantumDirac {
 	/** Memoise game outcomes for every combination of start positions, score and dice */
 	private final Map<GameState, Outcome> Mwinner;
 	
-	/** Cache hits */
-	private long cachehits = 0;
-	
 	/**
 	 * Create a new QuantumDirac game with the specified DiracDice game as its
 	 * initial game settings
@@ -51,9 +48,7 @@ public class QuantumDirac {
 	 *   universes it won in
 	 */
 	public long[] play( final int winscore ) {
-		cachehits = 0;
 		final Outcome outcomes = play( winscore, new GameState( position, new int[ position.length ], 0 ) );
-		System.out.println( "Cache hits: " + cachehits );
 		return outcomes.toLongArray();
 	}
 	

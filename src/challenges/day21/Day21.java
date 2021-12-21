@@ -30,9 +30,11 @@ public class Day21 {
 	}
 	
 	/**
+	 * Plays a nice little game of Dirac Dice until one of the players reaches
+	 * the score needed to win (1000 points!)
 	 * 
-	 * @param input 
-	 * @return
+	 * @param input The player's initial starting positions, one string per player 
+	 * @return The score of the losing player times the number of dice rolls
 	 */
 	public static long part1( final List<String> input ) {
 		final DiracDice game = DiracDice.fromStringList( input );
@@ -40,6 +42,17 @@ public class Day21 {
 		return game.getScore(1 - winner) * game.getDiceRolls( );
 	}
 	
+	/**
+	 * Plays a slightly more TERRIFYING game of Quantum Dirac Dice in which every
+	 * throw of a dice opens up a new universe... As this game is played 
+	 * simultaneously in a multitude of universes, this simple, singular and nicely
+	 * deterministic function will simply wait until all games are played out and
+	 * all universes collapse back into this one, while returning the total
+	 * number of wins of the player that won the most games over all universes.
+	 * 
+	 * @param input The player starting positions
+	 * @return The number of won games by the player that ruled the most universes
+	 */
 	public static long part2( final List<String> input ) {
 		final QuantumDirac qd = QuantumDirac.fromStringList( input );
 		
