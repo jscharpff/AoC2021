@@ -39,6 +39,11 @@ public class BurrowRoom {
 		this.apods = new Apod[ size ];
 	}
 	
+	/** @return The position of the door opening w.r.t. the hallway */
+	public int getDoorX( ) {
+		return door;
+	}
+	
 	/**
 	 * Adds a Apod to the room, can only add it to the first available slot
 	 * 

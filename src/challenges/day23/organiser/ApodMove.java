@@ -1,5 +1,7 @@
-package challenges.day23.apods;
+package challenges.day23.organiser;
 
+import challenges.day23.apods.Apod;
+import challenges.day23.apods.BurrowRoom;
 import util.geometry.Coord2D;
 
 /**
@@ -9,19 +11,19 @@ import util.geometry.Coord2D;
  */
 public class ApodMove {
 	/** The apod that is to perform the move */
-	protected final Apod apod;
+	public final Apod apod;
 	
 	/** The original position it came from */
-	private final Coord2D origin;
+	public final Coord2D origin;
 	
 	/** The target position of the move */
-	private final Coord2D target;
+	public final Coord2D target;
 	
 	/** The origin or target room, if this is respectively a hall or room move */
 	private final BurrowRoom room;
 	
 	/** The energy consumption of the move */
-	final public long energy;
+	public final long energy;
 	
 	/**
 	 * Creates a new Room move for the Apod
@@ -31,7 +33,7 @@ public class ApodMove {
 	 * @param energy The energy it will cost the Apod to get there
 	 */
 	protected ApodMove( final Apod apod, final BurrowRoom room, final long energy ) {
-		this( apod, new Coord2D( apod.getX( ), apod.getY( ) ), new Coord2D( room.door, room.getFirstAvailable( ) + 1 ), room, energy );
+		this( apod, new Coord2D( apod.getX( ), apod.getY( ) ), new Coord2D( room.getDoorX( ), room.getFirstAvailable( ) + 1 ), room, energy );
 	}
 
 	/**
@@ -73,19 +75,13 @@ public class ApodMove {
 	}
 	
 	/** @return True if this is a move to the hallway */
-	protected boolean toHallway( ) { return target.y == 0; }
+	public boolean toHallway( ) { return target.y == 0; }
 	
 	/** @return The target room */
-	protected BurrowRoom getRoom( ) {
+	public BurrowRoom getRoom( ) {
 		if( toHallway( ) ) throw new RuntimeException( "Tried to get target room from a hallway move" );
 		return room;
 	}
-	
-	/** @return The origin position of the move */
-	protected Coord2D getOrigin( ) { return this.origin; }	
-	
-	/** @return The target position of the move */
-	protected Coord2D getTarget( ) { return this.target; }
 	
 	/** @return The string describing the move */
 	@Override

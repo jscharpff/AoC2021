@@ -3,7 +3,10 @@ package challenges.day23;
 import java.util.List;
 
 import challenges.day23.apods.Burrow;
-import challenges.day23.apods.moveheuristic.MHLeastEnergyFirst;
+import challenges.day23.organiser.Organiser;
+import challenges.day23.organiser.heuristics.energy.EHMinimalInvalid;
+import challenges.day23.organiser.heuristics.energy.EnergyHeuristic;
+import challenges.day23.organiser.heuristics.move.MHLeastEnergyFirst;
 import util.io.FileReader;
 
 public class Day23 {
@@ -41,6 +44,12 @@ public class Day23 {
 	 */
 	public static long optimiseBurrow( final List<String> input ) {
 		final Burrow b = Burrow.fromStringList( input );
-		return b.organise( new MHLeastEnergyFirst( ) );
+		final Organiser o = new Organiser( b );
+		
+		o.setVerbose( true );
+		o.setMoveHeuristic( new MHLeastEnergyFirst( ) );
+		o.setEnergyHeuristic( new EHMinimalInvalid( ) );
+		
+		return o.organise( );
 	}
 }
