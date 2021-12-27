@@ -2,8 +2,6 @@ package challenges.day25;
 
 import java.util.List;
 
-import challenges.day21.dirac.DiracDice;
-import challenges.day21.dirac.QuantumDirac;
 import util.io.FileReader;
 
 public class Day25 {
@@ -21,21 +19,18 @@ public class Day25 {
 		final List<String> input = new FileReader( Day25.class.getResource( "day25_input.txt" ) ).readLines( );
 		
 		System.out.println( "---[ Part 1 ]---" );
-		System.out.println( "Example: " + part1( ex_input ) );
-		System.out.println( "Answer : " + part1( input ) );
-//
-//		System.out.println( "\n---[ Part 2 ]---" );
-//		System.out.println( "Example: " + part2( ex_input ) );
-//		System.out.println( "Answer : " + part2( input ) );
+		System.out.println( "Example: " + simulate( ex_input ) );
+		System.out.println( "Answer : " + simulate( input ) );
 	}
 	
 	/**
+	 * Simulates the movements of a grid of Sea Cucumbers until their movement
+	 * comes to a halt due to their movement constraints 
 	 * 
-	 * 
-	 * @param input
-	 * @return 
+	 * @param input The list of strings that describes the grid of Sea Cucumbers
+	 * @return The number of simulation steps until all movement halted
 	 */
-	public static long part1( final List<String> input ) {
+	public static long simulate( final List<String> input ) {
 		final SeaCucumbers sc = SeaCucumbers.fromStringList( input );
 		return sc.simulateUntilStopped( );
 	}

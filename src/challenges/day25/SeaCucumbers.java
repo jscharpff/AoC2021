@@ -2,14 +2,20 @@ package challenges.day25;
 
 import java.util.List;
 
+/**
+ * Class that represents a grid of Sea Cucumbers and simulates their collective
+ * movement.
+ * 
+ * @author Joris
+ */
 public class SeaCucumbers {
-	/** The grid od sea cucumbers */
+	/** The grid of sea cucumbers */
 	private final char[][] grid;
 	
 	/** The number of rows and columns in the grid */
 	private final int rows, columns;
 	
-	/** The grid values */
+	/** The grid values, i.e. the types of Sea Cucumbers */
 	private final char C_EAST = '>', C_SOUTH = 'v', C_EMPTY = '.';
 	
 	/**
@@ -25,7 +31,7 @@ public class SeaCucumbers {
 	}
 	
 	/**
-	 * Simulates the given number of steps
+	 * Simulates the movement for the given number of steps
 	 */
 	public void simulate( final int steps ) {
 		for( int i = 0; i < steps; i++ )
@@ -52,52 +58,60 @@ public class SeaCucumbers {
 	 * @return The number of sea cucumbers that moved
 	 */
 	private int step( ) {
-		int moves = 0;
+		return move( C_EAST, 0, 1 ) + move( C_SOUTH, 1, 0 );
+	}
+	
+	/**
+	 * Performs the move for the specified family of Sea Cucumbers. This will
+	 * update the grid and return the number of Sea Cucumbers that moved.
+	 * 
+	 * @param ctype The type of Sea Cucumbers to move
+	 * @param dy The vertical movement
+	 * @param dx The horizontal movement
+	 * @return The number of Sea Cucumbers of the family that successfully moved
+	 */
+	protected int move( final char ctype, final int dy, final int dx ) {	
+		// copy the current grid
 		final char[][] newgrid = new char[ rows ][ columns ];
 		for( int y = 0; y < rows; y++ )
 			for( int x = 0; x < columns; x++ )
 				newgrid[y][x] = grid[y][x];
 		
-		// east facing first
+		// move the sea cucumbers if their target position is available
+		int moves = 0;
 		for( int y = 0; y < rows; y++ )
 			for( int x = 0; x < columns; x++ ) {
-				if( grid[y][x] == C_EAST && grid[y][(x+1)%columns] == C_EMPTY ) {
-					newgrid[y][(x+1)%columns] = C_EAST;
-					newgrid[y][x] = C_EMPTY;
-					moves++;
-				}
+				final int newy = (y + dy) % rows, newx = (x + dx) % columns;
+				if( grid[y][x] != ctype || grid[newy][newx] != C_EMPTY ) continue;
+					
+				// this one can move!
+				newgrid[newy][newx] = ctype;
+				newgrid[y][x] = C_EMPTY;
+				moves++;
 			}
 
-		// swap to update for east moves
-		for( int y = 0; y < rows; y++ )
-			for( int x = 0; x < columns; x++ )
-				grid[y][x] = newgrid[y][x];
-		
-		// then south facing
-		for( int x = 0; x < columns; x++ )
+		// update the grid after all moves have been performed (if any)
+		if( moves > 0 ) {
 			for( int y = 0; y < rows; y++ )
-				if( grid[y][x] == C_SOUTH && grid[(y+1)%rows][x] == C_EMPTY ) {
-					newgrid[(y+1)%rows][x] = C_SOUTH;
-					newgrid[y][x] = C_EMPTY;
-					moves++;
-				}
-
-		for( int y = 0; y < rows; y++ )
-			for( int x = 0; x < columns; x++ )
-				grid[y][x] = newgrid[y][x];
+				for( int x = 0; x < columns; x++ )
+					grid[y][x] = newgrid[y][x];
+		}
+		
 		return moves;
 	}
 
 	/**
-	 * Creates a grid of Sea Cucmbers from a list of string
+	 * Creates a grid of Sea Cucumbers from a list of string
 	 * 
 	 * @param input The list of strings
 	 * @return The SeaCucumber grid
 	 */
 	public static SeaCucumbers fromStringList( final List<String> input ) {
+		// first determine grid size
 		final int N = input.size( );
 		final int M = input.get( 0 ).length( );
 		
+		// then get all the Sea Cucumbers themselves
 		final SeaCucumbers sc = new SeaCucumbers( N, M );
 		for( int row = 0; row < sc.rows; row++ )
 			for( int col = 0; col < sc.columns; col++ )
