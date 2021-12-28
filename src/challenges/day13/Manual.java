@@ -23,7 +23,7 @@ public class Manual {
 	public Manual( final List<String> input ) {
 		this.dots = new CoordGrid<>( false );
 		for( final String s : input ) {
-			dots.add( Coord2D.fromString( s ), true );			
+			dots.set( Coord2D.fromString( s ), true );			
 		}
 	}
 	
@@ -46,11 +46,11 @@ public class Manual {
 		final CoordGrid<Boolean> copy = new CoordGrid<>( false );
 		for( final Coord2D c : dots.getKeys( ) ) {
 			if( horizontal ) {
-				if( c.y <= foldline ) copy.add( c, true );
-				else copy.add( new Coord2D( c.x, 2 * foldline - c.y ), true );
+				if( c.y <= foldline ) copy.set( c, true );
+				else copy.set( new Coord2D( c.x, 2 * foldline - c.y ), true );
 			} else {
-				if( c.x <= foldline ) copy.add( c, true );			
-				else copy.add( new Coord2D( 2 * foldline - c.x, c.y ), true );
+				if( c.x <= foldline ) copy.set( c, true );			
+				else copy.set( new Coord2D( 2 * foldline - c.x, c.y ), true );
 			}
 		}
 

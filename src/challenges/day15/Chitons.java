@@ -68,7 +68,7 @@ public class Chitons {
 				for( int j = 0; j <= y; j++ ) {
 					if( i == 0 && j == 0 ) continue;
 					final int newrisk = (risk + (i + j) * riskinc);
-					chitons.add( c.move( size.x * i,  size.y * j ), newrisk > 9 ? newrisk - 9 : newrisk );
+					chitons.set( c.move( size.x * i,  size.y * j ), newrisk > 9 ? newrisk - 9 : newrisk );
 				}
 			}
 		}

@@ -80,7 +80,7 @@ public class Octopi {
 		for( final Coord2D c : octopi ) {
 			final int newval = octopi.get( c ) + 1;
 			if( newval > 9 ) toflash.add( c );
-			octopi.add( c, newval );
+			octopi.set( c, newval );
 		}
 		
 		// now 'flash' the octopi with new light value >= 9
@@ -97,12 +97,12 @@ public class Octopi {
 				// increase value and it to flash list if now flashing
 				final int newval = octopi.get( n ) + 1;
 				if( newval > 9 && !flashed.contains( n ) ) toflash.add( n );
-				octopi.add( n, newval );			}
+				octopi.set( n, newval );			}
 		}
 		
 		// now reset all flashed octopi to 0
 		for( final Coord2D c : flashed )
-			octopi.add( c, 0 );
+			octopi.set( c, 0 );
 		
 		// and return count of flashed octopi list
 		return flashed.size( );

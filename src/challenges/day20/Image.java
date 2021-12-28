@@ -52,7 +52,7 @@ public class Image {
 	public void set( final Coord2D coord, final boolean value ) {
 		// only add if not equal to default to keep the grid sparse
 		if( value != pixels.getDefaultValue( ) )
-			pixels.add( coord, value );
+			pixels.set( coord, value );
 	}
 	
 	/** @return The size of the image as 2D window */

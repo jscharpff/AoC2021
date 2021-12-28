@@ -37,7 +37,7 @@ public class VentMap {
 		
 		// update coordinate overlap in the grid
 		for( final Coord2D c : vent.getPoints( ) )
-			grid.add( c, grid.get( c, 0 ) + 1 );
+			grid.set( c, grid.get( c, 0 ) + 1 );
 	}
 		
 	/**
