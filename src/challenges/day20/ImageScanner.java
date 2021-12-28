@@ -1,8 +1,8 @@
 package challenges.day20;
 
-import util.BitString;
-import util.geometry.Coord2D;
-import util.geometry.Window2D;
+import aocutil.geometry.Coord2D;
+import aocutil.geometry.Window2D;
+import aocutil.string.BitString;
 
 /**
  * Class to enhance images based using a given algorithm to convert 3x3 blocks

@@ -4,7 +4,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import util.geometry.Cube3D;
+import aocutil.geometry.Cube3D;
 
 /**
  * Class that models the submarine reactor's Core, consisting of cubes in a

@@ -2,7 +2,7 @@ package challenges.day11;
 
 import java.util.List;
 
-import util.io.FileReader;
+import aocutil.io.FileReader;
 
 public class Day11 {
 

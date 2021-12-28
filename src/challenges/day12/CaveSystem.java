@@ -6,9 +6,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import util.graph.Graph;
-import util.graph.Node;
-import util.graph.Path;
+import aocutil.graph.Graph;
+import aocutil.graph.Node;
+import aocutil.graph.Path;
 
 public class CaveSystem {
 	/** The graph that represents the case system */

@@ -6,8 +6,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import util.geometry.Coord2D;
-import util.io.FileReader;
+import aocutil.geometry.Coord2D;
+import aocutil.io.FileReader;
 
 public class Day09 {
 

@@ -2,9 +2,9 @@ package challenges.day20;
 
 import java.util.List;
 
-import util.geometry.Coord2D;
-import util.geometry.Window2D;
-import util.grid.CoordGrid;
+import aocutil.geometry.Coord2D;
+import aocutil.geometry.Window2D;
+import aocutil.grid.CoordGrid;
 
 /**
  * Class that holds an image of simple pixels that can be either on or off 

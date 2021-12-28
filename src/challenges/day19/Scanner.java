@@ -5,8 +5,8 @@ import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import util.geometry.Coord3D;
-import util.geometry.Rotation3D;
+import aocutil.geometry.Coord3D;
+import aocutil.geometry.Rotation3D;
 
 /**
  * Class that holds a Scanner and the beacon it observes at coordinates

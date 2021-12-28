@@ -2,9 +2,9 @@ package challenges.day21;
 
 import java.util.List;
 
+import aocutil.io.FileReader;
 import challenges.day21.dirac.DiracDice;
 import challenges.day21.dirac.QuantumDirac;
-import util.io.FileReader;
 
 public class Day21 {
 

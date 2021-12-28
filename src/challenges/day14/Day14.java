@@ -3,7 +3,7 @@ package challenges.day14;
 import java.util.ArrayList;
 import java.util.List;
 
-import util.io.FileReader;
+import aocutil.io.FileReader;
 
 public class Day14 {
 

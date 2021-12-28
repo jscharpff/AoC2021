@@ -7,8 +7,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import aocutil.geometry.Coord2D;
 import challenges.day23.organiser.ApodMove;
-import util.geometry.Coord2D;
 
 /**
  * Class that represents a Burrow in which Apods live, one type per room

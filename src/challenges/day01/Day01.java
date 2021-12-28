@@ -1,6 +1,6 @@
 package challenges.day01;
 
-import util.io.FileReader;
+import aocutil.io.FileReader;
 
 public class Day01 {
 

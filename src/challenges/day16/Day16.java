@@ -2,8 +2,8 @@ package challenges.day16;
 
 import java.util.List;
 
+import aocutil.io.FileReader;
 import challenges.day16.packet.Packet;
-import util.io.FileReader;
 
 public class Day16 {
 

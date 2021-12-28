@@ -1,6 +1,6 @@
 package challenges.day16.packet;
 
-import util.BitString;
+import aocutil.string.BitString;
 
 /**
  * Container for a bit-encoded payload that offers convenient methods to

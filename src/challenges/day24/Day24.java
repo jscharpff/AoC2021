@@ -2,9 +2,9 @@ package challenges.day24;
 
 import java.util.List;
 
+import aocutil.io.FileReader;
 import challenges.day24.alu.ALU;
 import challenges.day24.alu.mem.MemRegister;
-import util.io.FileReader;
 
 public class Day24 {
 

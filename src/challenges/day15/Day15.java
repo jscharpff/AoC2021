@@ -2,8 +2,8 @@ package challenges.day15;
 
 import java.util.List;
 
-import util.geometry.Coord2D;
-import util.io.FileReader;
+import aocutil.geometry.Coord2D;
+import aocutil.io.FileReader;
 
 public class Day15 {
 

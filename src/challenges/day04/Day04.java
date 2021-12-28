@@ -2,9 +2,9 @@ package challenges.day04;
 
 import java.util.List;
 
+import aocutil.io.FileReader;
 import challenges.day04.bingo.Bingo;
 import challenges.day04.bingo.BingoCard;
-import util.io.FileReader;
 
 public class Day04 {
 

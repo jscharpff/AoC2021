@@ -9,8 +9,8 @@ import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import util.geometry.Coord2D;
-import util.geometry.Window2D;
+import aocutil.geometry.Coord2D;
+import aocutil.geometry.Window2D;
 
 /**
  * A probe that can be fired from Santa's submarine to explore the trenches of

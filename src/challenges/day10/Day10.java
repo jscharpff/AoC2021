@@ -4,11 +4,11 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import aocutil.io.FileReader;
 import challenges.day10.syntaxchecker.SyntaxChecker;
 import challenges.day10.syntaxchecker.error.ChunkIncompleteError;
 import challenges.day10.syntaxchecker.error.ChunkIncorrectError;
 import challenges.day10.syntaxchecker.error.UnknownCharacterError;
-import util.io.FileReader;
 
 public class Day10 {
 

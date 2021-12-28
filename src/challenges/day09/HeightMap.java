@@ -6,8 +6,8 @@ import java.util.List;
 import java.util.Set;
 import java.util.Stack;
 
-import util.geometry.Coord2D;
-import util.grid.CoordGrid;
+import aocutil.geometry.Coord2D;
+import aocutil.grid.CoordGrid;
 
 public class HeightMap {
 	/** The coordinate grid */

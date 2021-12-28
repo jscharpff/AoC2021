@@ -1,6 +1,6 @@
 package challenges.day23.apods;
 
-import util.geometry.Coord2D;
+import aocutil.geometry.Coord2D;
 
 /**
  * One single Amphipods, or Apod for short, that lives in the deep sea

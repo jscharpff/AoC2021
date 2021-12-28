@@ -3,8 +3,8 @@ package challenges.day03;
 import java.util.ArrayList;
 import java.util.List;
 
-import util.BitString;
-import util.io.FileReader;
+import aocutil.io.FileReader;
+import aocutil.string.BitString;
 
 public class Day03 {
 

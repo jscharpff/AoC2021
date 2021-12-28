@@ -1,8 +1,8 @@
 package challenges.day23.organiser;
 
+import aocutil.geometry.Coord2D;
 import challenges.day23.apods.Apod;
 import challenges.day23.apods.BurrowRoom;
-import util.geometry.Coord2D;
 
 /**
  * Container to store a single available move

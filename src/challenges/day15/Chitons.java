@@ -6,10 +6,10 @@ import java.util.PriorityQueue;
 import java.util.Queue;
 import java.util.Set;
 
-import util.geometry.Coord2D;
-import util.grid.CoordGrid;
-import util.uniquepriorityqueue.QElement;
-import util.uniquepriorityqueue.UniquePriorityQueue;
+import aocutil.geometry.Coord2D;
+import aocutil.grid.CoordGrid;
+import aocutil.upqueue.QElement;
+import aocutil.upqueue.UniquePriorityQueue;
 
 public class Chitons {
 	/** The CoordGrid representing the Chitons risk level */

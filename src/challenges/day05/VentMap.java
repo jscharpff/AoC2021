@@ -3,9 +3,9 @@ package challenges.day05;
 import java.util.ArrayList;
 import java.util.List;
 
-import util.geometry.Coord2D;
-import util.geometry.Line2D;
-import util.grid.CoordGrid;
+import aocutil.geometry.Coord2D;
+import aocutil.geometry.Line2D;
+import aocutil.grid.CoordGrid;
 
 /**
  * Class capturing all hydrothermal vent outputs

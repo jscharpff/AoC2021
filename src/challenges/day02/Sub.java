@@ -1,6 +1,6 @@
 package challenges.day02;
 
-import util.geometry.Coord2D;
+import aocutil.geometry.Coord2D;
 
 /**
  * Santa's submarine

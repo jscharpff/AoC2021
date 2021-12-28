@@ -2,8 +2,8 @@ package challenges.day22;
 
 import java.util.List;
 
-import util.geometry.Cube3D;
-import util.io.FileReader;
+import aocutil.geometry.Cube3D;
+import aocutil.io.FileReader;
 
 public class Day22 {
 

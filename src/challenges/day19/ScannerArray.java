@@ -7,8 +7,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import util.geometry.Coord3D;
-import util.geometry.Rotation3D;
+import aocutil.geometry.Coord3D;
+import aocutil.geometry.Rotation3D;
 
 /**
  * Class that represents an array of scanners, provides functionality to

@@ -4,9 +4,9 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import aocutil.geometry.Coord2D;
+import aocutil.io.FileReader;
 import challenges.day02.Sub.MoveDir;
-import util.geometry.Coord2D;
-import util.io.FileReader;
 
 public class Day02 {
 

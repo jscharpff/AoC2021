@@ -2,12 +2,11 @@ package challenges.day23;
 
 import java.util.List;
 
+import aocutil.io.FileReader;
 import challenges.day23.apods.Burrow;
 import challenges.day23.organiser.Organiser;
 import challenges.day23.organiser.heuristics.energy.EHMinimalInvalid;
-import challenges.day23.organiser.heuristics.energy.EnergyHeuristic;
 import challenges.day23.organiser.heuristics.move.MHLeastEnergyFirst;
-import util.io.FileReader;
 
 public class Day23 {
 
