@@ -6,10 +6,10 @@ import java.util.PriorityQueue;
 import java.util.Queue;
 import java.util.Set;
 
+import aocutil.collections.upqueue.QElement;
+import aocutil.collections.upqueue.UniquePriorityQueue;
 import aocutil.geometry.Coord2D;
 import aocutil.grid.CoordGrid;
-import aocutil.upqueue.QElement;
-import aocutil.upqueue.UniquePriorityQueue;
 
 public class Chitons {
 	/** The CoordGrid representing the Chitons risk level */
@@ -144,7 +144,7 @@ public class Chitons {
 			
 			
 			// explore its neighbours
-			for( final Coord2D n : new Coord2D( cd.x, cd.y ).getNeighbours( false ) ) {
+			for( final Coord2D n : chitons.getNeighbours( new Coord2D( cd.x, cd.y ), false ) ) {
 				final int newx = n.x;
 				final int newy = n.y;
 				
@@ -201,7 +201,7 @@ public class Chitons {
 			
 			
 			// explore its neighbours
-			for( final Coord2D n : new Coord2D( cd.x, cd.y ).getNeighbours( false ) ) {
+			for( final Coord2D n : chitons.getNeighbours( new Coord2D( cd.x, cd.y ), false ) ) {
 				final int newx = n.x;
 				final int newy = n.y;
 				

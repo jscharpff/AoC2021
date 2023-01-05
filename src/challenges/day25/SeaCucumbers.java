@@ -32,6 +32,8 @@ public class SeaCucumbers {
 	
 	/**
 	 * Simulates the movement for the given number of steps
+	 * 
+	 * @param steps The number of steps to simulate
 	 */
 	public void simulate( final int steps ) {
 		for( int i = 0; i < steps; i++ )

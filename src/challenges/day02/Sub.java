@@ -27,6 +27,7 @@ public class Sub {
 		 * Creates a direction from string value
 		 * 
 		 * @param s The label value
+		 * @return The direction
 		 */
 		public static MoveDir fromString( final String s ) {
 			for( MoveDir d : MoveDir.values( ) )

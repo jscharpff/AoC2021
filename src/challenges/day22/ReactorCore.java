@@ -77,6 +77,7 @@ public class ReactorCore {
 	 * 
 	 * @param bootregion The boot region, null for unbounded
 	 * @param sequence The list of boot instructions
+	 * @return The reactor core
 	 */
 	public static ReactorCore fromBootingSequence( final Cube3D bootregion, final List<String> sequence ) {
 		final ReactorCore r = new ReactorCore( );

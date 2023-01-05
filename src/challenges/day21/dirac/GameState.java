@@ -23,6 +23,10 @@ public class GameState {
 	
 	/**
 	 * Creates a new container for a game state
+	 * 
+	 * @param pos The positions of all players
+	 * @param score The scores of all players
+	 * @param p The player that is rolling next
 	 */
 	public GameState( final int[] pos, final int[] score, final int p ) {
 		this.position = pos.clone( );
@@ -36,6 +40,7 @@ public class GameState {
 	/**
 	 * Rolls the dice of the active player, opening up 3^ new universes
 	 * 
+	 * @param numrolls The number of dice rolls to perform
 	 * @return Three new game states that reflect the state of the game in all
 	 *   three freshly opened universes
 	 */

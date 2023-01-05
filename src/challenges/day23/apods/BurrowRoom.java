@@ -110,6 +110,7 @@ public class BurrowRoom {
 	/**
 	 * Checks if all occupants of this room are of the right family type
 	 * 
+	 * @param apod The apod to check family type of
 	 * @return True iff all occupants are of the family that this room is
 	 * supposed to be for
 	 */

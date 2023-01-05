@@ -63,7 +63,12 @@ public class Burrow {
 		return rooms.values( );
 	}
 	
-	/** @return The apod at the hallway position, null for no apod */
+	/**
+	 * Finds the apod currently at hallway position x
+	 * 
+	 * @param x The horizontal position within the hallway 
+	 * @return The apod at the hallway position, null for no apod
+	 */
 	public Apod getHallway( final int x ) {
 		if( x < 0 || x >= hallsize ) throw new IndexOutOfBoundsException( x );
 		return hallway[ x ];

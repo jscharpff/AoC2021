@@ -32,6 +32,7 @@ public class ALUMem {
 	 * Retrieves the value currently stored in the register
 	 * 
 	 * @param reg The register to load
+	 * @return The value currently in the specified register
 	 */
 	public long read( final MemRegister reg ) {
 		if( !registers.containsKey( reg ) ) throw new IllegalArgumentException( "No such register: "+ reg );
@@ -41,7 +42,7 @@ public class ALUMem {
 	/**
 	 * Writes the value to the register
 	 * 
-	 * @param register The register to write to
+	 * @param reg The register to write to
 	 * @param value The value to store in the register
 	 */
 	public void write( final MemRegister reg, final long value ) {

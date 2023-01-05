@@ -15,7 +15,7 @@ public abstract class Packet {
 	/**
 	 * Creates a new packet
 	 * 
-	 * @param verion The packet version
+	 * @param version The packet version
 	 */
 	public Packet( final int version ) {
 		this.version = version;

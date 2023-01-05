@@ -9,6 +9,9 @@ import java.util.Stack;
 import aocutil.geometry.Coord2D;
 import aocutil.grid.CoordGrid;
 
+/**
+ * Simple coordinate based map of heights 
+ */
 public class HeightMap {
 	/** The coordinate grid */
 	protected final CoordGrid<Integer> map;
@@ -23,6 +26,7 @@ public class HeightMap {
 	}
 	
 	/**
+	 * @param coord The coordinate
 	 * @return The height at the given coordinate
 	 */
 	public int getHeight( final Coord2D coord ) {
@@ -42,7 +46,7 @@ public class HeightMap {
 		for( final Coord2D c : map ) {
 			final int h = getHeight( c );
 			boolean lowest = true;
-			for( final Coord2D n : c.getNeighbours( false ) ) {
+			for( final Coord2D n : map.getNeighbours( c, false ) ) {
 				// only include coordinates actually in the grid
 				if( !map.hasValue( n ) ) continue; 
 				
@@ -80,7 +84,7 @@ public class HeightMap {
 			final int height = getHeight( node );
 			
 			// find all coords around the node with height + 1 to explore in the next iteration
-			for( final Coord2D newcoord : node.getNeighbours( false ) ) {
+			for( final Coord2D newcoord : map.getNeighbours( node, false ) ) {
 				// skip already visited coords or coords outside the grid
 				if( explored.contains( newcoord ) && !map.hasValue( newcoord ) ) continue;
 				

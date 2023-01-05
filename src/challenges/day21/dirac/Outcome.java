@@ -21,7 +21,7 @@ public class Outcome {
 	/**
 	 * Creates a new Outcome container
 	 * 
-	 * @param w The wins per player
+	 * @param wins The wins per player
 	 */
 	public Outcome( final long[] wins ) {
 		this.wins = wins.clone( );

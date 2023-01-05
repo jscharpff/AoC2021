@@ -32,6 +32,7 @@ public class Octopi {
 	/**
 	 * Runs the octopi flash simulation for n steps
 	 * 
+	 * @param n The number of steps to simulate
 	 * @return The number of flashes occurring over all steps
 	 */
 	public long simulate( final int n ) {
@@ -90,7 +91,7 @@ public class Octopi {
 			flashed.add( c );
 			
 			// increase energy level of neighbours by one
-			for( final Coord2D n : c.getNeighbours( true ) ) {
+			for( final Coord2D n : octopi.getNeighbours( c, true ) ) {
 				// only consider valid candidates
 				if( !octopi.hasValue( n ) ) continue;
 				

@@ -186,6 +186,7 @@ public class SNumber {
 	 * decode the input String in case of contained numbers
 	 * 
 	 * @param input The string input
+	 * @return The Snailfish Number
 	 */
 	public static SNumber fromString( final String input ) {
 		// try and parse this Snailfish Number as a pair first

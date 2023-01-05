@@ -34,7 +34,7 @@ public class Day12 {
 	 * Determines the number of unique cave routes
 	 *
 	 * @param input The list of edges that describe the cave system
-	 * @param allowedtwice True to allow at most one small cave to be visited
+	 * @param allowtwice True to allow at most one small cave to be visited
 	 *   twice, false means that all small caves can only be visited once
 	 * @return The number of unique paths through the cave system from start to
 	 *   end

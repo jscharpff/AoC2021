@@ -34,6 +34,7 @@ public class Day14 {
 	 *
 	 * @param input The list of strings that contains of the input polymer, a
 	 *   blank line and the element expansion rules (one per remaining line) 
+	 * @param steps The number of polymerisation steps to perform
 	 * @return The difference between the element counts of the most and least
 	 *   commonly occurring elements after polymerisation
 	 */

@@ -44,7 +44,10 @@ public class IArg {
 		return this.register;
 	}
 	
-	/** @return The value of the literal or the value of the register in the memory */
+	/**
+	 * @param mem The memory to read 
+	 * @return The value of the literal or the value of the register in the memory
+	 */
 	public long getValue( final ALUMem mem ) {
 		return isLiteral( ) ? value : mem.read( register );
 	}

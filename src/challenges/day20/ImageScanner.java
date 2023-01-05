@@ -24,9 +24,9 @@ public class ImageScanner {
 	}
 	
 	/**
-	 * Enhances the image using the pixelmap and returns a new, enhanced image
+	 * Enhances the image using the pixel map and returns a new, enhanced image
 	 * 
-	 * @param image The input image
+	 * @param input The input image
 	 * @param step The current enhancement step
 	 * @return An enhanced image
 	 */
